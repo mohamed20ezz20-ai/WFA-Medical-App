@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WFA Akademie · Medizinisches Deutsch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <div class="wfa-brand">WFA Akademie</div>
+      <div class="header-right">
+        <button class="admin-header-btn" id="adminHeaderBtn">Admin</button>
+        <span class="student-name-header" id="studentNameHeader"></span>
+      </div>
+      <div class="student-gold">
+        <span class="gold-coin">🪙</span> <span id="goldAmount">180</span>
+      </div>
+    </div>
+
+    <div id="loginArea" class="login-area">
+      <div class="login-logo heartbeat-emoji">🏥</div>
+      <div class="login-title">WFA</div>
+      <div class="login-sub">Medizinisches Deutsch</div>
+      <input type="text" id="studentNameInput" class="login-input" placeholder="Dein Name" autocomplete="off">
+      <button class="login-btn" id="startBtn">Eintreten</button>
+    </div>
+
+    <div id="mainApp" class="main-app">
+      <!-- المسرح الكبير -->
+      <div class="stage-container" id="stageContainer">
+        <div class="stage-curtain left" id="stageCurtainLeft"></div>
+        <div class="stage-curtain right" id="stageCurtainRight"></div>
+        <div class="stage-content" id="stageContent">
+          <!-- يتم ملؤها ديناميكياً: الشخصية والبطاقة معاً -->
+        </div>
+        <div class="stage-dialogue" id="stageDialogue"></div>
+      </div>
+
+      <!-- أزرار التنقل بين المشاهد -->
+      <div class="scene-nav">
+        <button class="nav-scene-btn" id="prevSceneBtn" disabled>◀ Zurück</button>
+        <button class="nav-scene-btn" id="nextSceneBtn">Weiter ▶</button>
+      </div>
+    </div>
+
+    <div id="adminOverlay" class="admin-overlay">
+      <div class="admin-panel">
+        <button class="close-admin" id="closeAdminBtn">Schließen</button>
+        <div id="adminLoginForm" class="admin-login-form">
+          <h3 style="color:#00bcd4;">Admin Login</h3>
+          <input type="password" id="adminPassword" class="admin-password-input" placeholder="Passwort">
+          <button class="admin-login-submit" id="adminLoginSubmit">Einloggen</button>
+        </div>
+        <div id="adminContent" style="display:none;">
+          <h2 style="color:#00bcd4;">Admin Dashboard</h2>
+          <div class="admin-stats" id="adminStats"></div>
+          <h3>Schülerdaten</h3>
+          <table style="width:100%; background:#2a2a2a;">
+            <thead><tr><th>Name</th><th>Level</th><th>Gold</th><th>Letzte Aktivität</th></tr></thead>
+            <tbody id="adminUserBody"></tbody>
+          </table>
+          <h3 style="margin-top:20px;">Vokabeln (Auszug)</h3>
+          <div id="adminVocabList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
