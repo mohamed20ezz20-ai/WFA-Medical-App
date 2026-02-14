@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WFA Akademie · Medizinisches Deutsch</title>
+  <title>WFA Akademie · Medizinisches Deutsch 3D</title>
+  <!-- Import Three.js und Addons -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+      }
+    }
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,17 +37,29 @@
     </div>
 
     <div id="mainApp" class="main-app">
-      <!-- المسرح الكبير -->
-      <div class="stage-container" id="stageContainer">
+      <!-- Umschaltknöpfe zwischen 3D-Welt und Theater -->
+      <div class="view-toggle">
+        <button class="toggle-btn active" id="show3DBtn">🌍 3D-Welt</button>
+        <button class="toggle-btn" id="showStageBtn">🎭 Theater</button>
+      </div>
+
+      <!-- 3D-Container (anfangs sichtbar) -->
+      <div id="threeContainer" class="three-container" style="display: block;">
+        <div id="three-canvas"></div>
+        <div class="three-info">👆 Klicke auf einen Würfel, um ein Level zu wählen</div>
+      </div>
+
+      <!-- Theater-Container (anfangs versteckt) -->
+      <div class="stage-container" id="stageContainer" style="display: none;">
         <div class="stage-curtain left" id="stageCurtainLeft"></div>
         <div class="stage-curtain right" id="stageCurtainRight"></div>
         <div class="stage-content" id="stageContent">
-          <!-- يتم ملؤها ديناميكياً: الشخصية والبطاقة معاً -->
+          <!-- Dynamisch befüllt -->
         </div>
         <div class="stage-dialogue" id="stageDialogue"></div>
       </div>
 
-      <!-- أزرار التنقل بين المشاهد -->
+      <!-- Aktionen -->
       <div class="scene-nav">
         <button class="nav-scene-btn" id="prevSceneBtn" disabled>◀ Zurück</button>
         <button class="nav-scene-btn" id="nextSceneBtn">Weiter ▶</button>
@@ -69,6 +90,6 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
