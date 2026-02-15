@@ -2,94 +2,131 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WFA Akademie · Medizinisches Deutsch 3D</title>
-  <!-- Import Three.js und Addons -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-      }
-    }
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WFA Akademie · Medizinisches Deutsch</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <div class="app-container">
-    <div class="app-header">
-      <div class="wfa-brand">WFA Akademie</div>
-      <div class="header-right">
-        <button class="admin-header-btn" id="adminHeaderBtn">Admin</button>
-        <span class="student-name-header" id="studentNameHeader"></span>
-      </div>
-      <div class="student-gold">
-        <span class="gold-coin">🪙</span> <span id="goldAmount">180</span>
+  <!-- Hintergrund-Landschaft mit Partikeln und Glow -->
+  <div class="landscape">
+    <div class="sky"></div>
+    <div class="ground"></div>
+    <div class="trees">
+      <div class="tree tree1"><div class="trunk"></div><div class="leaves"></div><div class="leaves2"></div><div class="shadow"></div></div>
+      <div class="tree tree2"><div class="trunk"></div><div class="leaves"></div><div class="leaves2"></div><div class="shadow"></div></div>
+      <div class="tree tree3"><div class="trunk"></div><div class="leaves"></div><div class="leaves2"></div><div class="shadow"></div></div>
+      <div class="tree tree4"><div class="trunk"></div><div class="leaves"></div><div class="leaves2"></div><div class="shadow"></div></div>
+      <div class="tree tree5"><div class="trunk"></div><div class="leaves"></div><div class="leaves2"></div><div class="shadow"></div></div>
+    </div>
+    <div class="river"></div>
+    <div class="particles"></div>
+  </div>
+
+  <!-- Hauptcontainer -->
+  <div class="app-wrapper">
+    <!-- LOGIN-SCREEN (separat) mit Admin-Button unten -->
+    <div id="loginScreen" class="login-screen active">
+      <div class="login-card">
+        <div class="heartbeat-emoji">🏥</div>
+        <h1>WFA Akademie</h1>
+        <p class="subtitle">Medizinisches Deutsch lernen</p>
+        <input type="text" id="nameInput" placeholder="Dein Name" autocomplete="off">
+        <button id="startBtn" class="primary-btn">Eintreten</button>
+        
+        <!-- Admin-Button separat unten -->
+        <div class="admin-login-container">
+          <button class="admin-login-btn" id="adminTrigger">🔒 Admin</button>
+        </div>
       </div>
     </div>
 
-    <div id="loginArea" class="login-area">
-      <div class="login-logo heartbeat-emoji">🏥</div>
-      <div class="login-title">WFA</div>
-      <div class="login-sub">Medizinisches Deutsch</div>
-      <input type="text" id="studentNameInput" class="login-input" placeholder="Dein Name" autocomplete="off">
-      <button class="login-btn" id="startBtn">Eintreten</button>
-    </div>
-
+    <!-- HAUPT-APP (nach Login) – ohne Admin-Button -->
     <div id="mainApp" class="main-app">
-      <!-- Umschaltknöpfe zwischen 3D-Welt und Theater -->
-      <div class="view-toggle">
-        <button class="toggle-btn active" id="show3DBtn">🌍 3D-Welt</button>
-        <button class="toggle-btn" id="showStageBtn">🎭 Theater</button>
-      </div>
-
-      <!-- 3D-Container (anfangs sichtbar) -->
-      <div id="threeContainer" class="three-container" style="display: block;">
-        <div id="three-canvas"></div>
-        <div class="three-info">👆 Klicke auf einen Würfel, um ein Level zu wählen</div>
-      </div>
-
-      <!-- Theater-Container (anfangs versteckt) -->
-      <div class="stage-container" id="stageContainer" style="display: none;">
-        <div class="stage-curtain left" id="stageCurtainLeft"></div>
-        <div class="stage-curtain right" id="stageCurtainRight"></div>
-        <div class="stage-content" id="stageContent">
-          <!-- Dynamisch befüllt -->
+      <!-- Header mit XP, Gold, Name und Leaderboard-Button -->
+      <header class="header">
+        <div class="logo-wrapper">
+          <div class="logo-icon">WFA</div>
+          <span class="logo-text">Akademie</span>
         </div>
-        <div class="stage-dialogue" id="stageDialogue"></div>
+        <div class="user-name-centered" id="userNameDisplay">Gast</div>
+        <div class="xp-gold">
+          <span class="xp">🔋 <span id="xpAmount">0</span></span>
+          <span class="gold">🪙 <span id="goldAmount">0</span></span>
+          <button class="leaderboard-icon" id="leaderboardBtn" title="Bestenliste">🏆</button>
+        </div>
+      </header>
+
+      <!-- Bühne (Theater) – Herzstück -->
+      <div class="theater-container">
+        <!-- Undurchsichtige Vorhänge (realistisch) -->
+        <div class="curtain curtain-left" id="curtainLeft"></div>
+        <div class="curtain curtain-right" id="curtainRight"></div>
+        <div class="curtain-frill left-frill"></div>
+        <div class="curtain-frill right-frill"></div>
+        <!-- Bühneninhalt -->
+        <div id="stageContent" class="stage-content"></div>
       </div>
 
-      <!-- Aktionen -->
-      <div class="scene-nav">
-        <button class="nav-scene-btn" id="prevSceneBtn" disabled>◀ Zurück</button>
-        <button class="nav-scene-btn" id="nextSceneBtn">Weiter ▶</button>
+      <!-- Aktions-Button (Start / Ja / Weiter / Los geht's) -->
+      <div class="action-button-container">
+        <button class="action-button" id="actionBtn">Start</button>
       </div>
+
+      <!-- Footer-Navigation (nur Deutsch) -->
+      <nav class="bottom-nav">
+        <button class="nav-item" data-tab="home" id="navHome"><span class="nav-icon">🏠</span><span class="nav-label">Startseite</span></button>
+        <button class="nav-item" data-tab="words" id="navWords"><span class="nav-icon">📚</span><span class="nav-label">Wörter</span></button>
+        <button class="nav-item" data-tab="dialogs" id="navDialogs"><span class="nav-icon">💬</span><span class="nav-label">Gespräche</span></button>
+        <button class="nav-item" data-tab="tests" id="navTests"><span class="nav-icon">❓</span><span class="nav-label">Prüfungen</span></button>
+      </nav>
     </div>
+  </div>
 
-    <div id="adminOverlay" class="admin-overlay">
-      <div class="admin-panel">
-        <button class="close-admin" id="closeAdminBtn">Schließen</button>
-        <div id="adminLoginForm" class="admin-login-form">
-          <h3 style="color:#00bcd4;">Admin Login</h3>
-          <input type="password" id="adminPassword" class="admin-password-input" placeholder="Passwort">
-          <button class="admin-login-submit" id="adminLoginSubmit">Einloggen</button>
-        </div>
-        <div id="adminContent" style="display:none;">
-          <h2 style="color:#00bcd4;">Admin Dashboard</h2>
-          <div class="admin-stats" id="adminStats"></div>
-          <h3>Schülerdaten</h3>
-          <table style="width:100%; background:#2a2a2a;">
-            <thead><tr><th>Name</th><th>Level</th><th>Gold</th><th>Letzte Aktivität</th></tr></thead>
-            <tbody id="adminUserBody"></tbody>
-          </table>
-          <h3 style="margin-top:20px;">Vokabeln (Auszug)</h3>
-          <div id="adminVocabList"></div>
-        </div>
+  <!-- Admin Overlay -->
+  <div id="adminOverlay" class="admin-overlay">
+    <div class="admin-panel">
+      <h2>Admin Login</h2>
+      <input type="password" id="adminPass" placeholder="Passwort">
+      <div class="admin-actions">
+        <button id="adminLoginBtn">Einloggen</button>
+        <button id="adminCloseBtn">Schließen</button>
+      </div>
+      <div id="adminDashboard" class="admin-dashboard">
+        <h3>Schülerdaten</h3>
+        <p>Name: <span id="adminName"></span></p>
+        <p>Gold: <span id="adminGold"></span></p>
+        <p>XP: <span id="adminXP"></span></p>
+        <p>Level: <span id="adminLevel"></span></p>
+        <p>Letzte Aktivität: <span id="adminLastActive"></span></p>
+        <h4>Abgeschlossene Level:</h4>
+        <ul id="adminCompleted"></ul>
+        <h4>Badges</h4>
+        <div id="adminBadges"></div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script type="module" src="script.js"></script>
+  <!-- Zertifikats-Modal (dynamisch) -->
+  <div id="certificateModal" class="modal">
+    <div class="modal-content certificate">
+      <span class="close-modal" id="closeCert">✕</span>
+      <div class="certificate-inner" id="certificateInner">
+        <!-- wird per JS gefüllt -->
+      </div>
+      <button class="download-btn" id="downloadCert">📥 PDF herunterladen</button>
+    </div>
+  </div>
+
+  <!-- Leaderboard Modal -->
+  <div id="leaderboardModal" class="modal">
+    <div class="modal-content leaderboard">
+      <span class="close-modal" id="closeLeaderboard">✕</span>
+      <h2>🏆 Bestenliste</h2>
+      <ul id="leaderboardList"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
