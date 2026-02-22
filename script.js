@@ -1,4 +1,4 @@
-// script.js - Vollständige Skriptdatei mit Ausdrücke-Tab und Textschutz
+// script.js - Vollständige Skriptdatei mit verbesserten Arzt-Dialogen und neuen Ausdrücken
 
 (function() {
   // ========== ERWEITERTE DATENBANK MIT DEN WICHTIGSTEN MEDIZINISCHEN AUSDRÜCKEN ==========
@@ -159,7 +159,7 @@
     { level: 1, type: 'conjunction', word: 'weil', meaning: 'Grund', synonyms: 'denn', example: 'Er liegt im Bett, weil er Fieber hat.', emoji: '❓' },
     { level: 1, type: 'conjunction', word: 'dass', meaning: 'Nebensatz', synonyms: '-', example: 'Ich denke, dass er krank ist.', emoji: '💭' },
     
-    // ===== SPEZIELLE AUSDRÜCKE FÜR DEN EXPRESSIONS-TAB =====
+    // ===== SPEZIELLE AUSDRÜCKE FÜR DEN EXPRESSIONS-TAB (ERWEITERT) =====
     { level: 3, type: 'expression', word: 'Hals- und Beinbruch!', meaning: 'Viel Glück! (besonders vor Operationen)', synonyms: 'Viel Erfolg!', example: 'Vor der OP: Hals- und Beinbruch!', emoji: '🍀' },
     { level: 3, type: 'expression', word: 'Auf dem Damm sein', meaning: 'wieder gesund sein', synonyms: 'genesen sein', example: 'Nach der Krankheit bin ich wieder auf dem Damm.', emoji: '💪' },
     { level: 3, type: 'expression', word: 'Sich den Magen verderben', meaning: 'Magenprobleme bekommen', synonyms: 'Magenverstimmung', example: 'Ich habe mir den Magen mit schlechtem Essen verdorben.', emoji: '🤢' },
@@ -170,6 +170,13 @@
     { level: 3, type: 'expression', word: 'Über den Berg sein', meaning: 'das Schlimmste überstanden haben', synonyms: 'gesund werden', example: 'Nach der Krise ist der Patient über den Berg.', emoji: '⛰️' },
     { level: 3, type: 'expression', word: 'Auf Krankenschein', meaning: 'auf Kosten der Krankenkasse', synonyms: 'Kassenleistung', example: 'Die Behandlung ist auf Krankenschein.', emoji: '💳' },
     { level: 3, type: 'expression', word: 'Jemanden auf die Palme bringen', meaning: 'jemanden reizen (bei Schmerzen)', synonyms: 'verärgern', example: 'Die ständigen Schmerzen bringen ihn auf die Palme.', emoji: '🌴' },
+    { level: 4, type: 'expression', word: 'Einen Korb bekommen', meaning: 'abgewiesen werden (bei Termin)', synonyms: 'abgelehnt werden', example: 'Er hat einen Korb bekommen, als er einen Termin wollte.', emoji: '🧺' },
+    { level: 4, type: 'expression', word: 'Auf dem Zahnfleisch gehen', meaning: 'völlig erschöpft sein', synonyms: 'am Ende sein', example: 'Nach der Nachtschicht gehe ich auf dem Zahnfleisch.', emoji: '🦷' },
+    { level: 4, type: 'expression', word: 'Sich aufreiben', meaning: 'sich verausgaben (bei der Arbeit)', synonyms: 'sich verausgaben', example: 'Die Ärztin reibt sich in der Klinik auf.', emoji: '🔥' },
+    { level: 4, type: 'expression', word: 'Jemanden auf Vordermann bringen', meaning: 'jemanden gesund machen', synonyms: 'wiederherstellen', example: 'Die Therapie brachte ihn wieder auf Vordermann.', emoji: '👨‍⚕️' },
+    { level: 4, type: 'expression', word: 'Auf dem absteigenden Ast sein', meaning: 'sich verschlechtern', synonyms: 'schlechter werden', example: 'Seit der Diagnose ist er auf dem absteigenden Ast.', emoji: '📉' },
+    { level: 4, type: 'expression', word: 'Sich aufrappeln', meaning: 'sich erholen', synonyms: 'aufstehen', example: 'Nach der OP rappelte er sich langsam auf.', emoji: '💪' },
+    { level: 4, type: 'expression', word: 'Jemanden auf Kurs bringen', meaning: 'wieder gesund machen', synonyms: 'heilen', example: 'Die Medikamente brachten ihn wieder auf Kurs.', emoji: '⚕️' },
   ];
 
   const dialogues = [
@@ -207,7 +214,8 @@
     level: 1,
     completedLevels: [],
     badges: [],
-    lastActive: new Date().toISOString()
+    lastActive: new Date().toISOString(),
+    healthStatus: {} // Speichert Antworten auf Gesundheitsfragen
   };
 
   let currentTab = 'home';
@@ -221,6 +229,7 @@
   let scene = 'curtain';
   let typewriterInterval = null;
   let typewriterFinished = false;
+  let healthQuestionsIndex = 0;
 
   // DOM-Elemente
   const loginScreen = document.getElementById('loginScreen');
@@ -256,6 +265,22 @@
   const curtainRight = document.getElementById('curtainRight');
   const actionBtn = document.getElementById('actionBtn');
   const leaderboardBtn = document.getElementById('leaderboardBtn');
+  const wordInfoBox = document.getElementById('wordInfoBox');
+  const wordInfoTitle = document.getElementById('wordInfoTitle');
+  const wordInfoContent = document.getElementById('wordInfoContent');
+  const closeInfoBtn = document.getElementById('closeInfoBtn');
+
+  // ========== CLOSE INFO BOX FUNCTION ==========
+  closeInfoBtn.addEventListener('click', () => {
+    wordInfoBox.classList.add('hidden');
+  });
+
+  // Auch Klick außerhalb schließt die Box nicht - nur der X-Button
+  window.addEventListener('click', (e) => {
+    if (e.target === wordInfoBox) {
+      wordInfoBox.classList.add('hidden');
+    }
+  });
 
   // ========== HILFSFUNKTIONEN ==========
   function saveUser() {
@@ -435,6 +460,17 @@
     }
   }
 
+  // ========== GESUNDHEITSFRAGEN FÜR DR. SCHMIDT ==========
+  const healthQuestions = [
+    { question: 'Haben Sie regelmäßig Sport gemacht?', options: ['Ja, täglich', 'Ja, 2-3 Mal pro Woche', 'Nein, selten'], correct: 'Ja, 2-3 Mal pro Woche' },
+    { question: 'Rauchen Sie?', options: ['Ja, regelmäßig', 'Gelegentlich', 'Nein, nie'], correct: 'Nein, nie' },
+    { question: 'Wie oft trinken Sie Alkohol?', options: ['Täglich', 'Wöchentlich', 'Nie'], correct: 'Nie' },
+    { question: 'Hatten Sie schon einmal eine schwere Krankheit?', options: ['Ja', 'Nein', 'Weiß nicht'], correct: 'Nein' },
+    { question: 'Nehmen Sie regelmäßig Medikamente?', options: ['Ja', 'Nein', 'Manchmal'], correct: 'Nein' },
+    { question: 'Wie schlafen Sie nachts?', options: ['Gut', 'Manchmal schlecht', 'Schlecht'], correct: 'Gut' },
+    { question: 'Haben Sie Stress im Alltag?', options: ['Ja, viel', 'Gelegentlich', 'Kaum'], correct: 'Gelegentlich' }
+  ];
+
   // ========== SZENEN ==========
   function renderScene() {
     stopTypeWriter();
@@ -551,7 +587,7 @@
         <div class="typing-text-container" id="typingSchmidt"></div>
       `;
       const typing = document.getElementById('typingSchmidt');
-      const msg = `Guten Tag! Ich bin Dr. Schmidt, Spezialistin für Innere Medizin und Kardiologie. Heute lernen Sie die wichtigsten medizinischen Fachbegriffe, die Sie in Klinik und Praxis brauchen.`;
+      const msg = `Guten Tag! Ich bin Dr. Schmidt, Spezialistin für Innere Medizin und Kardiologie. Bevor wir beginnen, möchte ich Ihnen einige Fragen zu Ihrer Gesundheit stellen.`;
       startTypeWriter(typing, msg, () => {
         actionBtn.textContent = 'Weiter';
         actionBtn.classList.remove('ja-button');
@@ -573,10 +609,7 @@
           </div>
         </div>
         <div class="stage-dialogue">
-          Dr. Weber: Das ist Dr. Schmidt, unsere Spezialistin für Innere Medizin. Sie kennt alle wichtigen medizinischen Ausdrücke.
-        </div>
-        <div class="stage-dialogue" style="margin-top: 15px;">
-          Dr. Schmidt: Gemeinsam begleiten wir Sie durch Ihre medizinische Ausbildung.
+          Dr. Weber: Das ist Dr. Schmidt, unsere Spezialistin für Innere Medizin. Sie wird Ihnen jetzt einige Fragen stellen.
         </div>
       `;
       actionBtn.textContent = 'Weiter';
@@ -584,7 +617,59 @@
       actionBtn.disabled = false;
     }
     
-    // Szene 8: Dr. Schmidt erklärt wichtige medizinische Begriffe
+    // Szene 8: Dr. Schmidt Gesundheitsfragen
+    else if (scene === 'healthQuestions') {
+      if (healthQuestionsIndex < healthQuestions.length) {
+        const q = healthQuestions[healthQuestionsIndex];
+        stageContent.innerHTML = `
+          <div class="stage-character">
+            <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
+            <div class="character-name">Dr. Schmidt</div>
+          </div>
+          <div class="typing-text-container" style="min-height: 100px;">${q.question}</div>
+          <div class="medical-options" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+            ${q.options.map(opt => `<div class="medical-option" data-opt="${opt}" data-correct="${q.correct}">${opt}</div>`).join('')}
+          </div>
+        `;
+        
+        document.querySelectorAll('.medical-option').forEach(opt => {
+          opt.addEventListener('click', (e) => {
+            const selected = e.target.dataset.opt;
+            const correct = e.target.dataset.correct;
+            currentUser.healthStatus[`q${healthQuestionsIndex}`] = selected;
+            
+            if (selected === correct) {
+              addXP(5);
+              addGold(2);
+            }
+            
+            healthQuestionsIndex++;
+            if (healthQuestionsIndex < healthQuestions.length) {
+              renderScene();
+            } else {
+              addXP(20);
+              stageContent.innerHTML = `
+                <div class="stage-character">
+                  <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
+                  <div class="character-name">Dr. Schmidt</div>
+                </div>
+                <div class="typing-text-container">Vielen Dank für Ihre Antworten! Sie sind bereit für den Kurs.</div>
+              `;
+              actionBtn.textContent = 'Weiter';
+              actionBtn.classList.remove('ja-button');
+              actionBtn.disabled = false;
+              healthQuestionsIndex = 0;
+            }
+          });
+        });
+        actionBtn.disabled = true;
+      } else {
+        scene = 'medicalTerms';
+        renderScene();
+      }
+    }
+    
+    // Szene 9: Dr. Schmidt erklärt wichtige medizinische Begriffe
     else if (scene === 'medicalTerms') {
       stageContent.innerHTML = `
         <div class="spotlight"></div>
@@ -627,7 +712,7 @@
       });
     }
     
-    // Szene 9: Medizinische Untersuchung mit Patientenfragen
+    // Szene 10: Medizinische Untersuchung mit Patientenfragen
     else if (scene === 'medicalExamination') {
       stageContent.innerHTML = `
         <div class="stage-character">
@@ -679,7 +764,7 @@
       });
     }
     
-    // Szene 10: Assistenz-Einführung
+    // Szene 11: Assistenz-Einführung
     else if (scene === 'assistantIntro') {
       stageContent.innerHTML = `
         <div class="spotlight"></div>
@@ -741,7 +826,7 @@
       typeNextLine();
     }
     
-    // Szene 11: Startseite mit Level-Auswahl
+    // Szene 12: Startseite mit Level-Auswahl
     else if (scene === 'home') {
       const levelNames = ['A1', 'A2', 'B1', 'B2'];
       let cards = '';
@@ -750,7 +835,7 @@
           <div class="level-card" data-level="${lvl}">
             <div class="level-number">${lvl}</div>
             <div class="level-name">Level ${lvl} (${levelNames[lvl-1]})</div>
-            <div class="level-count">${vocabulary.filter(v => v.level === lvl).length} Wörter</div>
+            <div class="level-count">${vocabulary.filter(v => v.level === lvl && v.type !== 'expression').length} Wörter</div>
           </div>
         `;
       }
@@ -770,7 +855,7 @@
       actionBtn.disabled = true;
     }
     
-    // Szene 12: Zertifikat
+    // Szene 13: Zertifikat
     else if (scene === 'certificateScene') {
       showCertificate(currentUser.level);
     }
@@ -1173,6 +1258,10 @@
       renderScene();
       typewriterFinished = false;
     } else if (scene === 'showBoth') {
+      scene = 'healthQuestions';
+      healthQuestionsIndex = 0;
+      renderScene();
+    } else if (scene === 'healthQuestions' && healthQuestionsIndex >= healthQuestions.length) {
       scene = 'medicalTerms';
       renderScene();
     } else if (scene === 'medicalTerms') {
