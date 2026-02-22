@@ -2,8 +2,11 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WFA Akademie · Medizinisches Deutsch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>WFA Akademie · Medizinisches Deutsch · Kardiologie & Innere Medizin</title>
+  <meta name="description" content="Lerne medizinisches Deutsch mit der WFA Akademie. Interaktive Kurse für Ärzte, Pflegekräfte und Medizinstudenten. A1 bis B2.">
+  <meta name="keywords" content="Medizinisches Deutsch, Deutsch für Ärzte, Fachsprache Medizin, WFA Akademie, Arzt-Patienten-Kommunikation">
+  <meta name="author" content="WFA Akademie">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -23,7 +26,7 @@
     <div class="particles"></div>
   </div>
 
-  <!-- Hauptcontainer -->
+  <!-- Hauptcontainer - erweitert für bessere Darstellung -->
   <div class="app-wrapper">
     <!-- LOGIN-SCREEN (separat) mit Admin-Button unten -->
     <div id="loginScreen" class="login-screen active">
@@ -41,7 +44,7 @@
       </div>
     </div>
 
-    <!-- HAUPT-APP (nach Login) – ohne Admin-Button -->
+    <!-- HAUPT-APP (nach Login) -->
     <div id="mainApp" class="main-app">
       <!-- Header mit XP, Gold, Name und Leaderboard-Button -->
       <header class="header">
@@ -57,29 +60,39 @@
         </div>
       </header>
 
-      <!-- Bühne (Theater) – Herzstück -->
+      <!-- Bühne (Theater) – Herzstück - erweitert mit Textschutz -->
       <div class="theater-container">
         <!-- Undurchsichtige Vorhänge (realistisch) -->
         <div class="curtain curtain-left" id="curtainLeft"></div>
         <div class="curtain curtain-right" id="curtainRight"></div>
         <div class="curtain-frill left-frill"></div>
         <div class="curtain-frill right-frill"></div>
-        <!-- Bühneninhalt -->
+        <!-- Bühneninhalt mit Textschutz -->
         <div id="stageContent" class="stage-content"></div>
       </div>
 
-      <!-- Aktions-Button (Start / Ja / Weiter / Los geht's) -->
+      <!-- Aktions-Button (Start / Ja / Weiter / Los geht's) - einziger Steuerungsbutton -->
       <div class="action-button-container">
         <button class="action-button" id="actionBtn">Start</button>
       </div>
 
-      <!-- Footer-Navigation (nur Deutsch) -->
+      <!-- Footer-Navigation mit zusätzlichem Ausdrücke-Button -->
       <nav class="bottom-nav">
         <button class="nav-item" data-tab="home" id="navHome"><span class="nav-icon">🏠</span><span class="nav-label">Startseite</span></button>
         <button class="nav-item" data-tab="words" id="navWords"><span class="nav-icon">📚</span><span class="nav-label">Wörter</span></button>
         <button class="nav-item" data-tab="dialogs" id="navDialogs"><span class="nav-icon">💬</span><span class="nav-label">Gespräche</span></button>
         <button class="nav-item" data-tab="tests" id="navTests"><span class="nav-icon">❓</span><span class="nav-label">Prüfungen</span></button>
+        <button class="nav-item expressions-btn" id="navExpressions" data-tab="expressions"><span class="nav-icon">💭</span><span class="nav-label">Ausdrücke</span></button>
       </nav>
+
+      <!-- Wort-Infobox für Erklärungen -->
+      <div id="wordInfoBox" class="word-info-box hidden">
+        <div class="word-info-header">
+          <span id="wordInfoTitle">Wort</span>
+          <button class="close-info-btn" id="closeInfoBtn">✕</button>
+        </div>
+        <div id="wordInfoContent" class="word-info-content"></div>
+      </div>
     </div>
   </div>
 
