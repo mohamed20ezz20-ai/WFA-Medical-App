@@ -1,47 +1,201 @@
-// script.js - Vollständige Skriptdatei
+// script.js - Vollständige Skriptdatei mit Ausdrücke-Tab und Textschutz
 
 (function() {
-  // ========== DATENBANK ==========
+  // ========== ERWEITERTE DATENBANK MIT DEN WICHTIGSTEN MEDIZINISCHEN AUSDRÜCKEN ==========
   const vocabulary = [
-    // Level 1 (A1) – Grundwortschatz
-    { level: 1, type: 'noun', word: 'Arzt', article: 'der', plural: 'Ärzte', meaning: 'medizinische Fachperson', synonyms: 'Doktor', example: 'Der Arzt untersucht den Patienten.', emoji: '👨‍⚕️' },
-    { level: 1, type: 'noun', word: 'Krankenschwester', article: 'die', plural: 'Krankenschwestern', meaning: 'Pflegekraft', synonyms: 'Schwester', example: 'Die Krankenschwester hilft dem Arzt.', emoji: '👩‍⚕️' },
-    { level: 1, type: 'noun', word: 'Krankenhaus', article: 'das', plural: 'Krankenhäuser', meaning: 'Einrichtung für medizinische Versorgung', synonyms: 'Klinik', example: 'Das Krankenhaus hat eine Notaufnahme.', emoji: '🏥' },
-    { level: 1, type: 'noun', word: 'Fieber', article: 'das', plural: '-', meaning: 'erhöhte Körpertemperatur', synonyms: 'Temperatur', example: 'Das Fieber steigt auf 39 Grad.', emoji: '🌡️' },
-    { level: 1, type: 'noun', word: 'Husten', article: 'der', plural: '-', meaning: 'Reflex zum Luftausstoß', synonyms: 'Hustenreiz', example: 'Trockener Husten kann reizend sein.', emoji: '😷' },
-    // Level 2 (A2) – Praxis/Dialoge
+    // ===== GRUNDWORTSCHATZ (A1) =====
+    { level: 1, type: 'noun', word: 'Arzt', article: 'der', plural: 'Ärzte', meaning: 'medizinische Fachperson', synonyms: 'Doktor, Mediziner', example: 'Der Arzt untersucht den Patienten.', emoji: '👨‍⚕️' },
+    { level: 1, type: 'noun', word: 'Ärztin', article: 'die', plural: 'Ärztinnen', meaning: 'weibliche medizinische Fachperson', synonyms: 'Doktorin', example: 'Die Ärztin verschreibt ein Medikament.', emoji: '👩‍⚕️' },
+    { level: 1, type: 'noun', word: 'Krankenschwester', article: 'die', plural: 'Krankenschwestern', meaning: 'Pflegekraft', synonyms: 'Schwester, Pflegerin', example: 'Die Krankenschwester hilft dem Arzt.', emoji: '👩‍⚕️' },
+    { level: 1, type: 'noun', word: 'Krankenpfleger', article: 'der', plural: 'Krankenpfleger', meaning: 'männliche Pflegekraft', synonyms: 'Pfleger', example: 'Der Krankenpfleger bringt das Essen.', emoji: '👨‍⚕️' },
+    { level: 1, type: 'noun', word: 'Krankenhaus', article: 'das', plural: 'Krankenhäuser', meaning: 'Einrichtung für medizinische Versorgung', synonyms: 'Klinik, Spital', example: 'Das Krankenhaus hat eine Notaufnahme.', emoji: '🏥' },
+    { level: 1, type: 'noun', word: 'Praxis', article: 'die', plural: 'Praxen', meaning: 'Arztpraxis, Behandlungsraum', synonyms: 'Ordination', example: 'Die Praxis ist von 8 bis 12 Uhr geöffnet.', emoji: '🏥' },
+    { level: 1, type: 'noun', word: 'Patient', article: 'der', plural: 'Patienten', meaning: 'kranke Person in Behandlung', synonyms: 'Kranker, Erkrankter', example: 'Der Patient wartet im Wartezimmer.', emoji: '👤' },
+    { level: 1, type: 'noun', word: 'Patientin', article: 'die', plural: 'Patientinnen', meaning: 'weibliche kranke Person', synonyms: 'Kranke', example: 'Die Patientin hat starke Schmerzen.', emoji: '👩' },
+    { level: 1, type: 'noun', word: 'Termin', article: 'der', plural: 'Termine', meaning: 'vereinbarte Zeit für Behandlung', synonyms: 'Verabredung', example: 'Ich habe einen Termin beim Arzt.', emoji: '📅' },
+    
+    // ===== KÖRPERTEILE (A1-A2) =====
+    { level: 1, type: 'noun', word: 'Kopf', article: 'der', plural: 'Köpfe', meaning: 'oberster Teil des Körpers', synonyms: 'Schädel', example: 'Der Kopf schmerzt.', emoji: '👤', diagnose: 'Migräne oder Spannungskopfschmerz' },
+    { level: 1, type: 'noun', word: 'Hals', article: 'der', plural: 'Hälse', meaning: 'Verbindung zwischen Kopf und Rumpf', synonyms: 'Kehle, Gurgel', example: 'Der Hals tut weh beim Schlucken.', emoji: '👤', diagnose: 'Pharyngitis oder Tonsillitis' },
+    { level: 1, type: 'noun', word: 'Brust', article: 'die', plural: 'Brüste', meaning: 'vorderer Teil des Rumpfes', synonyms: 'Thorax', example: 'Die Brust schmerzt beim Atmen.', emoji: '👤', diagnose: 'Bronchitis oder Pneumonie' },
+    { level: 1, type: 'noun', word: 'Herz', article: 'das', plural: 'Herzen', meaning: 'Zentrales Organ des Kreislaufs', synonyms: 'Pumpe', example: 'Das Herz schlägt schnell.', emoji: '❤️', diagnose: 'Tachykardie oder Herzrhythmusstörung' },
+    { level: 1, type: 'noun', word: 'Magen', article: 'der', plural: 'Mägen', meaning: 'Verdauungsorgan', synonyms: 'Bauch', example: 'Der Magen knurrt.', emoji: '👤', diagnose: 'Gastritis oder Ulkus' },
+    { level: 1, type: 'noun', word: 'Rücken', article: 'der', plural: 'Rücken', meaning: 'hinterer Teil des Rumpfes', synonyms: 'Wirbelsäule', example: 'Der Rücken schmerzt.', emoji: '👤', diagnose: 'Lumbago oder Bandscheibenvorfall' },
+    { level: 1, type: 'noun', word: 'Arm', article: 'der', plural: 'Arme', meaning: 'obere Extremität', synonyms: 'Gliedmaße', example: 'Der Arm ist gebrochen.', emoji: '💪', diagnose: 'Fraktur oder Distorsion' },
+    { level: 1, type: 'noun', word: 'Hand', article: 'die', plural: 'Hände', meaning: 'Greiforgan', synonyms: 'Pfote', example: 'Die Hand ist geschwollen.', emoji: '✋' },
+    { level: 1, type: 'noun', word: 'Bein', article: 'das', plural: 'Beine', meaning: 'untere Extremität', synonyms: 'Glied', example: 'Das Bein ist geschwollen.', emoji: '🦵', diagnose: 'Thrombose oder Ödem' },
+    { level: 1, type: 'noun', word: 'Fuß', article: 'der', plural: 'Füße', meaning: 'unterster Teil des Beines', synonyms: 'Glied', example: 'Der Fuß tut weh.', emoji: '🦶' },
+    { level: 1, type: 'noun', word: 'Auge', article: 'das', plural: 'Augen', meaning: 'Sehorgan', synonyms: 'Sehorgan', example: 'Die Augen brennen.', emoji: '👁️' },
+    { level: 1, type: 'noun', word: 'Ohr', article: 'das', plural: 'Ohren', meaning: 'Hörorgan', synonyms: 'Hörer', example: 'Die Ohren schmerzen.', emoji: '👂' },
+    { level: 1, type: 'noun', word: 'Nase', article: 'die', plural: 'Nasen', meaning: 'Geruchsorgan', synonyms: 'Riecher', example: 'Die Nase läuft.', emoji: '👃' },
+    { level: 1, type: 'noun', word: 'Mund', article: 'der', plural: 'Münder', meaning: 'Öffnung für Nahrung und Sprache', synonyms: 'Maul', example: 'Der Mund ist trocken.', emoji: '👄' },
+    { level: 1, type: 'noun', word: 'Zahn', article: 'der', plural: 'Zähne', meaning: 'hartes Gebilde im Mund', synonyms: 'Beißer', example: 'Der Zahn schmerzt.', emoji: '🦷' },
+    
+    // ===== SYMPTOME UND BESCHWERDEN (A2-B1) =====
+    { level: 2, type: 'noun', word: 'Schmerz', article: 'der', plural: 'Schmerzen', meaning: 'körperliche Empfindung', synonyms: 'Weh, Pein', example: 'Ich habe starke Schmerzen.', emoji: '🤕' },
+    { level: 2, type: 'noun', word: 'Kopfschmerzen', article: 'die', plural: '-', meaning: 'Schmerzen im Kopf', synonyms: 'Kopfweh', example: 'Ich habe Kopfschmerzen.', emoji: '🤯' },
+    { level: 2, type: 'noun', word: 'Bauchschmerzen', article: 'die', plural: '-', meaning: 'Schmerzen im Bauch', synonyms: 'Bauchweh', example: 'Die Bauchschmerzen sind stark.', emoji: '😖' },
+    { level: 2, type: 'noun', word: 'Rückenschmerzen', article: 'die', plural: '-', meaning: 'Schmerzen im Rücken', synonyms: 'Kreuzschmerzen', example: 'Rückenschmerzen sind häufig.', emoji: '😫' },
+    { level: 2, type: 'noun', word: 'Fieber', article: 'das', plural: '-', meaning: 'erhöhte Körpertemperatur', synonyms: 'Temperatur', example: 'Das Fieber steigt auf 39 Grad.', emoji: '🌡️' },
+    { level: 2, type: 'noun', word: 'Husten', article: 'der', plural: '-', meaning: 'Reflex zum Luftausstoß', synonyms: 'Hustenreiz', example: 'Trockener Husten kann reizend sein.', emoji: '😷' },
+    { level: 2, type: 'noun', word: 'Schnupfen', article: 'der', plural: '-', meaning: 'Erkältung der Nase', synonyms: 'Rhinitis', example: 'Schnupfen ist ansteckend.', emoji: '🤧' },
+    { level: 2, type: 'noun', word: 'Erkältung', article: 'die', plural: 'Erkältungen', meaning: 'grippaler Infekt', synonyms: 'Verkühlung', example: 'Eine Erkältung dauert etwa eine Woche.', emoji: '😷' },
+    { level: 2, type: 'noun', word: 'Grippe', article: 'die', plural: 'Grippen', meaning: 'Influenza', synonyms: 'Virusgrippe', example: 'Die Grippe ist eine ernste Erkrankung.', emoji: '🤒' },
+    { level: 2, type: 'noun', word: 'Allergie', article: 'die', plural: 'Allergien', meaning: 'Überempfindlichkeitsreaktion', synonyms: 'Überempfindlichkeit', example: 'Die Allergie gegen Pollen ist stark.', emoji: '🤧' },
+    { level: 2, type: 'noun', word: 'Durchfall', article: 'der', plural: '-', meaning: 'häufiger, flüssiger Stuhl', synonyms: 'Diarrhö', example: 'Durchfall kann gefährlich sein.', emoji: '💩' },
+    { level: 2, type: 'noun', word: 'Übelkeit', article: 'die', plural: '-', meaning: 'Brechreiz', synonyms: 'Nausea', example: 'Übelkeit nach dem Essen.', emoji: '🤢' },
+    { level: 2, type: 'noun', word: 'Erbrechen', article: 'das', plural: '-', meaning: 'Herauswürgen von Mageninhalt', synonyms: 'Vomitus', example: 'Erbrechen ist anstrengend.', emoji: '🤮' },
+    { level: 2, type: 'noun', word: 'Schwindel', article: 'der', plural: '-', meaning: 'Gefühl der Unsicherheit', synonyms: 'Vertigo', example: 'Schwindel beim Aufstehen.', emoji: '😵' },
+    { level: 2, type: 'noun', word: 'Müdigkeit', article: 'die', plural: '-', meaning: 'Erschöpfungszustand', synonyms: 'Abgeschlagenheit', example: 'Müdigkeit ist ein Symptom.', emoji: '😴' },
+    
+    // ===== UNTERSUCHUNG UND DIAGNOSE (A2-B1) =====
+    { level: 2, type: 'noun', word: 'Untersuchung', article: 'die', plural: 'Untersuchungen', meaning: 'medizinische Prüfung', synonyms: 'Check-up', example: 'Die Untersuchung dauert 30 Minuten.', emoji: '🔍' },
+    { level: 2, type: 'verb', word: 'untersuchen', meaning: 'medizinisch prüfen', synonyms: 'checken, begutachten', example: 'Der Arzt untersucht den Patienten.', emoji: '🔍' },
+    { level: 2, type: 'noun', word: 'Diagnose', article: 'die', plural: 'Diagnosen', meaning: 'Feststellung einer Krankheit', synonyms: 'Befund', example: 'Die Diagnose lautet Grippe.', emoji: '🔬' },
+    { level: 2, type: 'verb', word: 'diagnostizieren', meaning: 'Krankheit feststellen', synonyms: 'erkennen, feststellen', example: 'Der Arzt diagnostiziert eine Grippe.', emoji: '🔬' },
+    { level: 2, type: 'noun', word: 'Befund', article: 'der', plural: 'Befunde', meaning: 'Ergebnis der Untersuchung', synonyms: 'Resultat', example: 'Der Befund ist negativ.', emoji: '📋' },
+    { level: 2, type: 'noun', word: 'Blutdruck', article: 'der', plural: '-', meaning: 'Druck des Blutes', synonyms: 'arterieller Druck', example: 'Der Blutdruck ist zu hoch.', emoji: '🩸' },
+    { level: 2, type: 'noun', word: 'Blutdruckmessung', article: 'die', plural: 'Blutdruckmessungen', meaning: 'Messung des arteriellen Drucks', synonyms: 'RR-Messung', example: 'Die Blutdruckmessung ist schmerzfrei.', emoji: '🩺' },
+    { level: 2, type: 'noun', word: 'Blutabnahme', article: 'die', plural: 'Blutabnahmen', meaning: 'Entnahme von Blut', synonyms: 'Blutentnahme', example: 'Die Blutabnahme ist notwendig.', emoji: '💉' },
+    { level: 2, type: 'noun', word: 'Blutbild', article: 'das', plural: 'Blutbilder', meaning: 'Laboruntersuchung des Blutes', synonyms: 'Hämogramm', example: 'Das Blutbild ist unauffällig.', emoji: '🩸' },
+    { level: 2, type: 'noun', word: 'Röntgen', article: 'das', plural: 'Röntgen', meaning: 'bildgebendes Verfahren', synonyms: 'Röntgenaufnahme', example: 'Das Röntgen zeigt einen Bruch.', emoji: '📻' },
+    { level: 2, type: 'noun', word: 'Ultraschall', article: 'der', plural: 'Ultraschalle', meaning: 'Sonographie', synonyms: 'Sonografie', example: 'Der Ultraschall ist schmerzfrei.', emoji: '📊' },
+    { level: 2, type: 'noun', word: 'EKG', article: 'das', plural: 'EKGs', meaning: 'Elektrokardiogramm', synonyms: 'Herzstromkurve', example: 'Das EKG zeigt keine Auffälligkeiten.', emoji: '📈' },
+    { level: 2, type: 'noun', word: 'CT', article: 'das', plural: 'CTs', meaning: 'Computertomographie', synonyms: 'Computertomogramm', example: 'Das CT gibt detaillierte Bilder.', emoji: '🖥️' },
+    { level: 2, type: 'noun', word: 'MRT', article: 'das', plural: 'MRTs', meaning: 'Magnetresonanztomographie', synonyms: 'Kernspin', example: 'Das MRT dauert 30 Minuten.', emoji: '🧲' },
+    
+    // ===== BEHANDLUNG UND THERAPIE (A2-B1) =====
+    { level: 2, type: 'noun', word: 'Therapie', article: 'die', plural: 'Therapien', meaning: 'Behandlung', synonyms: 'Heilverfahren', example: 'Die Therapie dauert zwei Wochen.', emoji: '💊' },
+    { level: 2, type: 'verb', word: 'behandeln', meaning: 'therapieren', synonyms: 'heilen, kurieren', example: 'Wir behandeln die Krankheit.', emoji: '💊' },
+    { level: 2, type: 'noun', word: 'Medikament', article: 'das', plural: 'Medikamente', meaning: 'Arzneimittel', synonyms: 'Arznei, Mittel', example: 'Das Medikament wirkt schnell.', emoji: '💊' },
+    { level: 2, type: 'noun', word: 'Tablette', article: 'die', plural: 'Tabletten', meaning: 'festes Arzneimittel', synonyms: 'Pille', example: 'Nehmen Sie die Tablette mit Wasser.', emoji: '💊' },
+    { level: 2, type: 'noun', word: 'Salbe', article: 'die', plural: 'Salben', meaning: 'Creme für die Haut', synonyms: 'Creme', example: 'Die Salbe hilft bei Hautausschlag.', emoji: '🧴' },
+    { level: 2, type: 'noun', word: 'Spritze', article: 'die', plural: 'Spritzen', meaning: 'Injektion', synonyms: 'Injektion', example: 'Die Spritze tut kurz weh.', emoji: '💉' },
+    { level: 2, type: 'noun', word: 'Infusion', article: 'die', plural: 'Infusionen', meaning: 'Flüssigkeitszufuhr über Vene', synonyms: 'Tropf', example: 'Die Infusion gleicht den Flüssigkeitsverlust aus.', emoji: '💧' },
+    { level: 2, type: 'noun', word: 'Operation', article: 'die', plural: 'Operationen', meaning: 'chirurgischer Eingriff', synonyms: 'OP', example: 'Die Operation war erfolgreich.', emoji: '🔪' },
+    { level: 2, type: 'verb', word: 'operieren', meaning: 'chirurgisch behandeln', synonyms: 'eingreifen', example: 'Der Chirurg operiert das Herz.', emoji: '👨‍⚕️' },
     { level: 2, type: 'noun', word: 'Rezept', article: 'das', plural: 'Rezepte', meaning: 'ärztliche Verordnung', synonyms: 'Verschreibung', example: 'Das Rezept muss in der Apotheke eingelöst werden.', emoji: '📝' },
     { level: 2, type: 'noun', word: 'Apotheke', article: 'die', plural: 'Apotheken', meaning: 'Geschäft für Medikamente', synonyms: 'Pharmazie', example: 'Gehen Sie in die Apotheke.', emoji: '💊' },
-    { level: 2, type: 'verb', word: 'nehmen', meaning: 'einnehmen', synonyms: 'schlucken', example: 'Nehmen Sie die Medikamente.', emoji: '💊',
-      conjugation: { praesens: 'nimmt', praeteritum: 'nahm', perfekt: 'hat genommen', beispiel_praesens: 'Er nimmt die Tablette.', beispiel_praeteritum: 'Er nahm sie gestern.', beispiel_perfekt: 'Er hat sie genommen.' } },
-    { level: 2, type: 'noun', word: 'Schmerz', article: 'der', plural: 'Schmerzen', meaning: 'körperliche Empfindung', synonyms: 'Weh', example: 'Ich habe starke Schmerzen.', emoji: '🤕' },
-    // Level 3 (B1) – Notaufnahme
-    { level: 3, type: 'noun', word: 'Notaufnahme', article: 'die', plural: 'Notaufnahmen', meaning: 'Abteilung für Notfälle', synonyms: 'ER', example: 'Die Notaufnahme ist 24h geöffnet.', emoji: '🚑' },
-    { level: 3, type: 'verb', word: 'operieren', meaning: 'chirurgisch behandeln', synonyms: 'eingreifen', example: 'Der Chirurg operiert das Herz.', emoji: '👨‍⚕️',
-      conjugation: { praesens: 'operiert', praeteritum: 'operierte', perfekt: 'hat operiert', beispiel_praesens: 'Der Arzt operiert heute.', beispiel_praeteritum: 'Er operierte gestern.', beispiel_perfekt: 'Er hat erfolgreich operiert.' } },
-    { level: 3, type: 'noun', word: 'Blutdruck', article: 'der', plural: '-', meaning: 'Druck des Blutes', synonyms: 'arterieller Druck', example: 'Der Blutdruck ist zu hoch.', emoji: '🩸' },
-    // Level 4 (B2) – Innere Medizin
+    { level: 2, type: 'noun', word: 'Dosis', article: 'die', plural: 'Dosen', meaning: 'bestimmte Menge eines Medikaments', synonyms: 'Menge', example: 'Die Dosis beträgt 500 mg.', emoji: '⚖️' },
+    
+    // ===== NOTFALL UND AKUTSITUATIONEN (B1) =====
+    { level: 3, type: 'noun', word: 'Notaufnahme', article: 'die', plural: 'Notaufnahmen', meaning: 'Abteilung für Notfälle', synonyms: 'ER, Notfallambulanz', example: 'Die Notaufnahme ist 24h geöffnet.', emoji: '🚑' },
+    { level: 3, type: 'noun', word: 'Notarzt', article: 'der', plural: 'Notärzte', meaning: 'Arzt für Notfälle', synonyms: 'Rettungsarzt', example: 'Der Notarzt kommt mit dem Rettungswagen.', emoji: '🚑' },
+    { level: 3, type: 'noun', word: 'Rettungswagen', article: 'der', plural: 'Rettungswagen', meaning: 'Krankenwagen', synonyms: 'Krankenwagen', example: 'Der Rettungswagen bringt den Patienten ins Krankenhaus.', emoji: '🚑' },
+    { level: 3, type: 'noun', word: 'Unfall', article: 'der', plural: 'Unfälle', meaning: 'Ereignis mit Verletzung', synonyms: 'Unglück', example: 'Bei dem Unfall wurden drei Personen verletzt.', emoji: '💥' },
+    { level: 3, type: 'noun', word: 'Verletzung', article: 'die', plural: 'Verletzungen', meaning: 'körperliche Schädigung', synonyms: 'Wunde', example: 'Die Verletzung ist schwer.', emoji: '🤕' },
+    { level: 3, type: 'noun', word: 'Fraktur', article: 'die', plural: 'Frakturen', meaning: 'Knochenbruch', synonyms: 'Bruch', example: 'Die Fraktur muss operiert werden.', emoji: '🦴' },
+    { level: 3, type: 'noun', word: 'Blutung', article: 'die', plural: 'Blutungen', meaning: 'Austritt von Blut', synonyms: 'Hämorrhagie', example: 'Die Blutung muss gestoppt werden.', emoji: '🩸' },
+    { level: 3, type: 'noun', word: 'Herzinfarkt', article: 'der', plural: 'Herzinfarkte', meaning: 'Myokardinfarkt', synonyms: 'Herzattacke', example: 'Bei einem Herzinfarkt zählt jede Minute.', emoji: '💔' },
+    { level: 3, type: 'noun', word: 'Schlaganfall', article: 'der', plural: 'Schlaganfälle', meaning: 'Apoplex', synonyms: 'Hirninfarkt', example: 'Bei einem Schlaganfall hilft schnelle Behandlung.', emoji: '🧠' },
+    { level: 3, type: 'noun', word: 'Vergiftung', article: 'die', plural: 'Vergiftungen', meaning: 'Intoxikation', synonyms: 'Intoxikation', example: 'Die Vergiftung durch Pilze ist gefährlich.', emoji: '☠️' },
+    { level: 3, type: 'noun', word: 'Verbrennung', article: 'die', plural: 'Verbrennungen', meaning: 'Schädigung durch Hitze', synonyms: 'Brandwunde', example: 'Die Verbrennung muss gekühlt werden.', emoji: '🔥' },
+    { level: 3, type: 'noun', word: 'Bewusstlosigkeit', article: 'die', plural: '-', meaning: 'Ohnmacht', synonyms: 'Ohnmacht', example: 'Bei Bewusstlosigkeit den Notarzt rufen.', emoji: '😵' },
+    
+    // ===== MEDIZINISCHE GERÄTE UND INSTRUMENTE (B1) =====
+    { level: 3, type: 'noun', word: 'Stethoskop', article: 'das', plural: 'Stethoskope', meaning: 'Hörrohr für Herz und Lunge', synonyms: 'Hörrohr', example: 'Der Arzt hört mit dem Stethoskop das Herz ab.', emoji: '🩺' },
+    { level: 3, type: 'noun', word: 'Blutdruckmessgerät', article: 'das', plural: 'Blutdruckmessgeräte', meaning: 'Gerät zur Blutdruckmessung', synonyms: 'RR-Gerät', example: 'Das Blutdruckmessgerät zeigt 120/80.', emoji: '🩺' },
+    { level: 3, type: 'noun', word: 'Fieberthermometer', article: 'das', plural: 'Fieberthermometer', meaning: 'Gerät zur Temperaturmessung', synonyms: 'Thermometer', example: 'Das Fieberthermometer zeigt 38 Grad.', emoji: '🌡️' },
+    { level: 3, type: 'noun', word: 'Spritze', article: 'die', plural: 'Spritzen', meaning: 'Injektionsgerät', synonyms: 'Kanüle', example: 'Die Spritze ist steril.', emoji: '💉' },
+    { level: 3, type: 'noun', word: 'Infusionsständer', article: 'der', plural: 'Infusionsständer', meaning: 'Ständer für Infusionen', synonyms: 'Tropfständer', example: 'Der Infusionsständer steht neben dem Bett.', emoji: '💧' },
+    { level: 3, type: 'noun', word: 'Rollstuhl', article: 'der', plural: 'Rollstühle', meaning: 'Fahrzeug für Gehbehinderte', synonyms: 'Fahrstuhl', example: 'Der Patient sitzt im Rollstuhl.', emoji: '♿' },
+    { level: 3, type: 'noun', word: 'Krankenbett', article: 'das', plural: 'Krankenbetten', meaning: 'Bett für Patienten', synonyms: 'Patientenbett', example: 'Das Krankenbett lässt sich verstellen.', emoji: '🛏️' },
+    { level: 3, type: 'noun', word: 'Trage', article: 'die', plural: 'Tragen', meaning: 'Transportliege', synonyms: 'Bahre', example: 'Der Patient liegt auf der Trage.', emoji: '🛏️' },
+    
+    // ===== MEDIZINISCHE FACHBEGRIFFE (B2) =====
     { level: 4, type: 'noun', word: 'Intensivstation', article: 'die', plural: 'Intensivstationen', meaning: 'Station für Schwerstkranke', synonyms: 'ICU', example: 'Die Intensivstation ist im 3. Stock.', emoji: '🏥' },
-    { level: 4, type: 'noun', word: 'Herzinfarkt', article: 'der', plural: 'Herzinfarkte', meaning: 'Myokardinfarkt', synonyms: 'Herzattacke', example: 'Bei einem Herzinfarkt zählt jede Minute.', emoji: '💔' },
+    { level: 4, type: 'noun', word: 'Herzinsuffizienz', article: 'die', plural: '-', meaning: 'Herzschwäche', synonyms: 'Herzmuskelschwäche', example: 'Die Herzinsuffizienz erfordert eine spezielle Therapie.', emoji: '❤️‍🩹' },
     { level: 4, type: 'noun', word: 'Diagnose', article: 'die', plural: 'Diagnosen', meaning: 'Feststellung einer Krankheit', synonyms: 'Befund', example: 'Die Diagnose lautet Grippe.', emoji: '🔬' },
-    { level: 4, type: 'noun', word: 'Therapie', article: 'die', plural: 'Therapien', meaning: 'Behandlung', synonyms: 'Heilverfahren', example: 'Die Therapie dauert zwei Wochen.', emoji: '💊' }
+    { level: 4, type: 'noun', word: 'Prognose', article: 'die', plural: 'Prognosen', meaning: 'Vorhersage des Krankheitsverlaufs', synonyms: 'Vorhersage', example: 'Die Prognose ist gut.', emoji: '🔮' },
+    { level: 4, type: 'noun', word: 'Anamnese', article: 'die', plural: 'Anamnesen', meaning: 'Krankengeschichte', synonyms: 'Vorgeschichte', example: 'Die Anamnese ist wichtig für die Diagnose.', emoji: '📋' },
+    { level: 4, type: 'noun', word: 'Rehabilitation', article: 'die', plural: 'Rehabilitationen', meaning: 'Wiedereingliederung', synonyms: 'Reha', example: 'Die Rehabilitation dauert drei Wochen.', emoji: '🏋️' },
+    { level: 4, type: 'noun', word: 'Krankenakte', article: 'die', plural: 'Krankenakten', meaning: 'Patientenakte', synonyms: 'Patientenakte', example: 'Die Krankenakte enthält alle wichtigen Daten.', emoji: '📁' },
+    { level: 4, type: 'noun', word: 'Krankengeschichte', article: 'die', plural: 'Krankengeschichten', meaning: 'Anamnese', synonyms: 'Anamnese', example: 'Die Krankengeschichte wird aufgenommen.', emoji: '📜' },
+    { level: 4, type: 'noun', word: 'Impfung', article: 'die', plural: 'Impfungen', meaning: 'Schutzimpfung', synonyms: 'Vakzination', example: 'Die Impfung schützt vor Krankheiten.', emoji: '💉' },
+    { level: 4, type: 'noun', word: 'Krankschreibung', article: 'die', plural: 'Krankschreibungen', meaning: 'Attest für Arbeitsunfähigkeit', synonyms: 'Arbeitsunfähigkeitsbescheinigung', example: 'Der Arzt gibt eine Krankschreibung für eine Woche.', emoji: '📄' },
+    
+    // ===== WICHTIGE VERBEN IM MEDIZINISCHEN KONTEXT (A2-B1) =====
+    { level: 2, type: 'verb', word: 'nehmen', meaning: 'einnehmen', synonyms: 'schlucken', example: 'Nehmen Sie die Medikamente.', emoji: '💊',
+      conjugation: { praesens: 'nimmt', praeteritum: 'nahm', perfekt: 'hat genommen' } },
+    { level: 2, type: 'verb', word: 'einnehmen', meaning: 'Medikamente zu sich nehmen', synonyms: 'nehmen', example: 'Bitte nehmen Sie die Tabletten ein.', emoji: '💊',
+      conjugation: { praesens: 'nimmt ein', praeteritum: 'nahm ein', perfekt: 'hat eingenommen' } },
+    { level: 2, type: 'verb', word: 'verschreiben', meaning: 'Rezept ausstellen', synonyms: 'verordnen', example: 'Der Arzt verschreibt Antibiotika.', emoji: '📝',
+      conjugation: { praesens: 'verschreibt', praeteritum: 'verschrieb', perfekt: 'hat verschrieben' } },
+    { level: 2, type: 'verb', word: 'verordnen', meaning: 'ärztlich anordnen', synonyms: 'verschreiben', example: 'Der Arzt verordnet Bettruhe.', emoji: '📋',
+      conjugation: { praesens: 'verordnet', praeteritum: 'verordnete', perfekt: 'hat verordnet' } },
+    { level: 2, type: 'verb', word: 'spritzen', meaning: 'injizieren', synonyms: 'injizieren', example: 'Die Schwester spritzt das Medikament.', emoji: '💉',
+      conjugation: { praesens: 'spritzt', praeteritum: 'spritzte', perfekt: 'hat gespritzt' } },
+    { level: 2, type: 'verb', word: 'abhören', meaning: 'mit Stethoskop hören', synonyms: 'auskultieren', example: 'Der Arzt hört die Lunge ab.', emoji: '🩺',
+      conjugation: { praesens: 'hört ab', praeteritum: 'hörte ab', perfekt: 'hat abgehört' } },
+    { level: 2, type: 'verb', word: 'messen', meaning: 'bestimmen', synonyms: 'feststellen', example: 'Die Schwester misst den Blutdruck.', emoji: '📏',
+      conjugation: { praesens: 'misst', praeteritum: 'maß', perfekt: 'hat gemessen' } },
+    { level: 2, type: 'verb', word: 'wiegen', meaning: 'Gewicht bestimmen', synonyms: 'Gewicht messen', example: 'Der Patient wird gewogen.', emoji: '⚖️',
+      conjugation: { praesens: 'wiegt', praeteritum: 'wog', perfekt: 'hat gewogen' } },
+    { level: 2, type: 'verb', word: 'heilen', meaning: 'gesund machen', synonyms: 'kurieren', example: 'Die Wunde heilt langsam.', emoji: '✨',
+      conjugation: { praesens: 'heilt', praeteritum: 'heilte', perfekt: 'hat geheilt' } },
+    
+    // ===== WICHTIGE FRAGEN IM MEDIZINISCHEN KONTEXT (A1-A2) =====
+    { level: 1, type: 'phrase', word: 'Was fehlt Ihnen?', meaning: 'Frage nach Beschwerden', synonyms: 'Wo tut es weh?', example: 'Arzt: Was fehlt Ihnen?', emoji: '❓' },
+    { level: 1, type: 'phrase', word: 'Wo tut es weh?', meaning: 'Frage nach Schmerzort', synonyms: 'Wo haben Sie Schmerzen?', example: 'Wo tut es weh?', emoji: '❓' },
+    { level: 1, type: 'phrase', word: 'Seit wann haben Sie das?', meaning: 'Frage nach Beginn', synonyms: 'Seit wann?', example: 'Seit wann haben Sie die Schmerzen?', emoji: '⏰' },
+    { level: 1, type: 'phrase', word: 'Haben Sie Fieber?', meaning: 'Frage nach Temperatur', synonyms: 'Temperatur?', example: 'Haben Sie Fieber?', emoji: '🌡️' },
+    { level: 1, type: 'phrase', word: 'Nehmen Sie Medikamente?', meaning: 'Frage nach Medikation', synonyms: 'Medikamente?', example: 'Nehmen Sie regelmäßig Medikamente?', emoji: '💊' },
+    { level: 1, type: 'phrase', word: 'Haben Sie Allergien?', meaning: 'Frage nach Allergien', synonyms: 'Allergien?', example: 'Haben Sie Allergien gegen Medikamente?', emoji: '🤧' },
+    { level: 2, type: 'phrase', word: 'Bitte atmen Sie tief ein.', meaning: 'Aufforderung zum Atmen', synonyms: 'Einatmen', example: 'Bitte atmen Sie tief ein.', emoji: '💨' },
+    { level: 2, type: 'phrase', word: 'Bitte ausatmen.', meaning: 'Aufforderung zum Ausatmen', synonyms: 'Ausatmen', example: 'Und jetzt bitte ausatmen.', emoji: '💨' },
+    { level: 2, type: 'phrase', word: 'Bitte machen Sie den Mund auf.', meaning: 'Aufforderung zum Mund öffnen', synonyms: 'Mund auf', example: 'Bitte machen Sie den Mund auf.', emoji: '👄' },
+    { level: 2, type: 'phrase', word: 'Bitte strecken Sie die Zunge raus.', meaning: 'Aufforderung', synonyms: 'Zunge zeigen', example: 'Bitte strecken Sie die Zunge raus.', emoji: '👅' },
+    
+    // ===== PRÄPOSITIONEN IM MEDIZINISCHEN KONTEXT (A1) =====
+    { level: 1, type: 'preposition', word: 'im', meaning: 'in dem (Krankenhaus)', synonyms: 'innerhalb', example: 'Der Patient ist im Krankenhaus.', emoji: '📍' },
+    { level: 1, type: 'preposition', word: 'in der', meaning: 'in der (Praxis)', synonyms: 'innerhalb', example: 'In der Praxis arbeiten viele Ärzte.', emoji: '📍' },
+    { level: 1, type: 'preposition', word: 'auf', meaning: 'auf der (Station)', synonyms: 'oberhalb', example: 'Auf der Intensivstation.', emoji: '⬆️' },
+    { level: 1, type: 'preposition', word: 'bei', meaning: 'beim (Arzt)', synonyms: 'neben', example: 'Bei Schmerzen sofort melden.', emoji: '👥' },
+    { level: 1, type: 'preposition', word: 'seit', meaning: 'zeitlicher Beginn', synonyms: 'ab', example: 'Seit gestern habe ich Schmerzen.', emoji: '⏰' },
+    
+    // ===== KONJUNKTIONEN (A1) =====
+    { level: 1, type: 'conjunction', word: 'und', meaning: 'Verbindung', synonyms: 'sowie', example: 'Arzt und Patient.', emoji: '➕' },
+    { level: 1, type: 'conjunction', word: 'aber', meaning: 'Gegensatz', synonyms: 'doch', example: 'Er ist krank, aber nicht schwer.', emoji: '🔄' },
+    { level: 1, type: 'conjunction', word: 'weil', meaning: 'Grund', synonyms: 'denn', example: 'Er liegt im Bett, weil er Fieber hat.', emoji: '❓' },
+    { level: 1, type: 'conjunction', word: 'dass', meaning: 'Nebensatz', synonyms: '-', example: 'Ich denke, dass er krank ist.', emoji: '💭' },
+    
+    // ===== SPEZIELLE AUSDRÜCKE FÜR DEN EXPRESSIONS-TAB =====
+    { level: 3, type: 'expression', word: 'Hals- und Beinbruch!', meaning: 'Viel Glück! (besonders vor Operationen)', synonyms: 'Viel Erfolg!', example: 'Vor der OP: Hals- und Beinbruch!', emoji: '🍀' },
+    { level: 3, type: 'expression', word: 'Auf dem Damm sein', meaning: 'wieder gesund sein', synonyms: 'genesen sein', example: 'Nach der Krankheit bin ich wieder auf dem Damm.', emoji: '💪' },
+    { level: 3, type: 'expression', word: 'Sich den Magen verderben', meaning: 'Magenprobleme bekommen', synonyms: 'Magenverstimmung', example: 'Ich habe mir den Magen mit schlechtem Essen verdorben.', emoji: '🤢' },
+    { level: 3, type: 'expression', word: 'Grünes Licht geben', meaning: 'Zustimmung für Behandlung', synonyms: 'genehmigen', example: 'Der Chefarzt gab grünes Licht für die OP.', emoji: '🟢' },
+    { level: 3, type: 'expression', word: 'Auf dem Weg der Besserung', meaning: 'sich erholen', synonyms: 'bessern', example: 'Der Patient ist auf dem Weg der Besserung.', emoji: '📈' },
+    { level: 3, type: 'expression', word: 'Jemanden auf die Beine helfen', meaning: 'bei Genesung helfen', synonyms: 'unterstützen', example: 'Die Physiotherapie half ihm auf die Beine.', emoji: '🦵' },
+    { level: 3, type: 'expression', word: 'Sich etwas zuziehen', meaning: 'sich infizieren', synonyms: 'anstecken', example: 'Er hat sich eine Erkältung zugezogen.', emoji: '🦠' },
+    { level: 3, type: 'expression', word: 'Über den Berg sein', meaning: 'das Schlimmste überstanden haben', synonyms: 'gesund werden', example: 'Nach der Krise ist der Patient über den Berg.', emoji: '⛰️' },
+    { level: 3, type: 'expression', word: 'Auf Krankenschein', meaning: 'auf Kosten der Krankenkasse', synonyms: 'Kassenleistung', example: 'Die Behandlung ist auf Krankenschein.', emoji: '💳' },
+    { level: 3, type: 'expression', word: 'Jemanden auf die Palme bringen', meaning: 'jemanden reizen (bei Schmerzen)', synonyms: 'verärgern', example: 'Die ständigen Schmerzen bringen ihn auf die Palme.', emoji: '🌴' },
   ];
 
   const dialogues = [
     { level: 1, character: 'Dr. Weber', emoji: '👨‍⚕️', text: 'Guten Tag, Herr Klein. Was fehlt Ihnen?' },
     { level: 1, character: 'Herr Klein', emoji: '👴', text: 'Ich habe starke Kopfschmerzen und Fieber.' },
-    { level: 2, character: 'Schwester Margot', emoji: '👩‍⚕️', text: 'Ich werde Ihre Temperatur messen.' },
-    { level: 2, character: 'Dr. Weber', emoji: '👨‍⚕️', text: 'Ich verschreibe Ihnen Medikamente.' },
-    { level: 3, character: 'Apotheker', emoji: '🧑‍🔬', text: 'Hier sind Ihre Tabletten.' }
+    { level: 2, character: 'Schwester Margot', emoji: '👩‍⚕️', text: 'Ich werde Ihre Temperatur messen. Bitte machen Sie den Mund auf.' },
+    { level: 2, character: 'Dr. Weber', emoji: '👨‍⚕️', text: 'Ich verschreibe Ihnen Medikamente. Nehmen Sie die Tabletten dreimal täglich.' },
+    { level: 2, character: 'Patientin', emoji: '👩', text: 'Muss ich die Tabletten mit Wasser einnehmen?' },
+    { level: 2, character: 'Dr. Weber', emoji: '👨‍⚕️', text: 'Ja, mit viel Wasser.' },
+    { level: 3, character: 'Apotheker', emoji: '🧑‍🔬', text: 'Hier sind Ihre Tabletten. Bitte beachten Sie die Dosierung.' },
+    { level: 3, character: 'Patient', emoji: '👴', text: 'Ich habe starke Schmerzen in der Brust!' },
+    { level: 3, character: 'Notarzt', emoji: '🚑', text: 'Wir bringen Sie sofort in die Notaufnahme.' },
+    { level: 4, character: 'Dr. Schmidt', emoji: '👩‍⚕️', text: 'Wir müssen sofort ein EKG machen. Bitte atmen Sie tief ein.' }
   ];
 
   const testQuestions = [
     { level: 1, question: 'Was ist der Artikel von "Arzt"?', options: ['der', 'die', 'das'], correct: 'der' },
     { level: 1, question: 'Was ist der Artikel von "Krankenschwester"?', options: ['der', 'die', 'das'], correct: 'die' },
+    { level: 1, question: 'Was ist der Artikel von "Krankenhaus"?', options: ['der', 'die', 'das'], correct: 'das' },
     { level: 2, question: 'Was ist die Bedeutung von "Rezept"?', options: ['ärztliche Verordnung', 'Medikament', 'Krankenhaus'], correct: 'ärztliche Verordnung' },
     { level: 2, question: 'Konjugiere "nehmen" im Präsens (er/sie/es):', options: ['nimmt', 'nahm', 'genommen'], correct: 'nimmt' },
+    { level: 2, question: 'Was ist ein "Stethoskop"?', options: ['Hörrohr', 'Fieberthermometer', 'Blutdruckmessgerät'], correct: 'Hörrohr' },
     { level: 3, question: 'Was ist "Notaufnahme"?', options: ['Abteilung für Notfälle', 'Intensivstation', 'OP-Saal'], correct: 'Abteilung für Notfälle' },
-    { level: 4, question: 'Was bedeutet "Herzinfarkt"?', options: ['Herzattacke', 'Herzrasen', 'Herzstillstand'], correct: 'Herzattacke' }
+    { level: 3, question: 'Was bedeutet "Herzinfarkt"?', options: ['Herzattacke', 'Herzrasen', 'Herzstillstand'], correct: 'Herzattacke' },
+    { level: 4, question: 'Was ist die Diagnose bei einer Herzschwäche?', options: ['Herzinsuffizienz', 'Herzrhythmusstörung', 'Endokarditis'], correct: 'Herzinsuffizienz' },
+    { level: 4, question: 'Was ist eine "Anamnese"?', options: ['Krankengeschichte', 'Blutuntersuchung', 'Röntgenbild'], correct: 'Krankengeschichte' }
   ];
 
   // ========== SPIELERZUSTAND ==========
@@ -60,33 +214,13 @@
   let currentWordIndex = 0;
   let currentDialogIndex = 0;
   let currentTestIndex = 0;
+  let currentExpressionIndex = 0;
   let selectedWord = null;
-  let showCardBack = false;
 
   // Zustände für Szenenablauf
-  let scene = 'curtain'; // mögliche Werte: curtain, welcome, askAge, ageInput, introduceSecond, showBoth, assistantIntro, medicalExamination, home
+  let scene = 'curtain';
   let typewriterInterval = null;
   let typewriterFinished = false;
-
-  // Audio Context
-  let audioCtx = null;
-  function playSound(freq = 200, duration = 0.05, gainVal = 0.03) {
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.value = freq;
-      gain.gain.value = gainVal;
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
-    } catch (e) {}
-  }
-  function playCoinSound() { playSound(600, 0.1, 0.1); }
-  function playTypeSound() { playSound(200, 0.05, 0.03); }
-  function playCuffSound() { playSound(300, 0.3, 0.1); } // für Manschette
 
   // DOM-Elemente
   const loginScreen = document.getElementById('loginScreen');
@@ -179,30 +313,105 @@
     saveUser();
   }
 
+  function getWordClass(word) {
+    const found = vocabulary.find(v => v.word.toLowerCase() === word.toLowerCase());
+    if (!found) return '';
+    
+    if (found.type === 'noun') {
+      if (found.article === 'der') return 'noun-m';
+      else if (found.article === 'die') return 'noun-f';
+      else if (found.article === 'das') return 'noun-n';
+    } else if (found.type === 'verb') {
+      return 'verb-word';
+    } else if (found.type === 'preposition') {
+      return 'preposition';
+    } else if (found.type === 'conjunction') {
+      return 'conjunction';
+    } else if (found.type === 'phrase' || found.type === 'expression') {
+      return 'verb-word';
+    }
+    return '';
+  }
+
   function colorizeText(text) {
-    const parts = text.split(/(\s+|[.,!?])/);
-    return parts.map(part => {
+    const words = text.split(/(\s+|[.,!?])/);
+    return words.map(part => {
       if (part.match(/^\s+$/) || part.match(/^[.,!?]$/)) return part;
       const clean = part.replace(/[.,!?]/g, '');
-      const lower = clean.toLowerCase();
-      const found = vocabulary.find(v => v.word.toLowerCase() === lower);
+      const found = vocabulary.find(v => v.word.toLowerCase() === clean.toLowerCase());
       if (found) {
-        let colorClass = '';
-        if (found.type === 'noun') {
-          if (found.article === 'der') colorClass = 'noun-m';
-          else if (found.article === 'die') colorClass = 'noun-f';
-          else if (found.article === 'das') colorClass = 'noun-n';
-        } else if (found.type === 'verb') {
-          colorClass = 'verb-word';
-        }
-        return `<span class="${colorClass}">${part}</span>`;
+        const wordClass = getWordClass(clean);
+        return `<span class="clickable-word ${wordClass}" onclick="window.showWordInfo('${clean}')">${part}</span>`;
       }
       return part;
     }).join('');
   }
 
+  window.showWordInfo = function(word) {
+    const found = vocabulary.find(v => v.word.toLowerCase() === word.toLowerCase());
+    if (found) {
+      selectedWord = found;
+      wordInfoTitle.textContent = found.word;
+      
+      let articleInfo = '';
+      if (found.type === 'noun') {
+        articleInfo = `<p><strong>Artikel:</strong> <span class="${getWordClass(found.word)}">${found.article}</span></p>`;
+        if (found.plural) articleInfo += `<p><strong>Plural:</strong> ${found.plural}</p>`;
+      }
+      
+      let diagnoseInfo = '';
+      if (found.diagnose) {
+        diagnoseInfo = `<p><strong>Mögliche Diagnose:</strong> ${found.diagnose}</p>`;
+      }
+      
+      let conjugationInfo = '';
+      if (found.type === 'verb' && found.conjugation) {
+        conjugationInfo = `
+          <p><strong>Konjugation:</strong></p>
+          <p>Präsens: ${found.conjugation.praesens}</p>
+          <p>Präteritum: ${found.conjugation.praeteritum}</p>
+          <p>Perfekt: ${found.conjugation.perfekt}</p>
+        `;
+      }
+      
+      wordInfoContent.innerHTML = `
+        <p><strong>Bedeutung:</strong> ${found.meaning}</p>
+        ${articleInfo}
+        <p><strong>Synonyme:</strong> ${found.synonyms || '-'}</p>
+        <p><strong>Beispiel:</strong> "${found.example}"</p>
+        ${diagnoseInfo}
+        ${conjugationInfo}
+        <p><small>Typ: ${found.type}</small></p>
+      `;
+      
+      wordInfoBox.classList.remove('hidden');
+      addXP(2);
+    }
+  };
+
+  // Audio Context
+  let audioCtx = null;
+  function playSound(freq = 200, duration = 0.05, gainVal = 0.03) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      gain.gain.value = gainVal;
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+  function playCoinSound() { playSound(600, 0.1, 0.1); }
+  function playTypeSound() { playSound(200, 0.05, 0.03); }
+  function playCurtainSound() { playSound(150, 0.8, 0.15); }
+
   function startTypeWriter(element, text, callback) {
     stopTypeWriter();
+    
     let index = 0;
     element.innerHTML = '';
     typewriterInterval = setInterval(() => {
@@ -231,6 +440,7 @@
     stopTypeWriter();
     typewriterFinished = false;
 
+    // Szene 1: Geschlossene Vorhänge
     if (scene === 'curtain') {
       stageContent.innerHTML = '';
       actionBtn.textContent = 'Start';
@@ -238,18 +448,39 @@
       actionBtn.disabled = false;
       curtainLeft.classList.remove('open-left');
       curtainRight.classList.remove('open-right');
-    } else if (scene === 'welcome') {
-      curtainLeft.classList.add('open-left');
-      curtainRight.classList.add('open-right');
-      stageContent.innerHTML = '<div class="typing-text-container" id="typingWelcome"></div>';
+      
+      setTimeout(() => {
+        playCurtainSound();
+        curtainLeft.classList.add('open-left');
+        curtainRight.classList.add('open-right');
+        
+        setTimeout(() => {
+          scene = 'welcome';
+          renderScene();
+        }, 1500);
+      }, 3000);
+    }
+    
+    // Szene 2: Dr. Weber begrüßt
+    else if (scene === 'welcome') {
+      stageContent.innerHTML = `
+        <div class="stage-character">
+          <div class="character-emoji heartbeat-emoji">👨‍⚕️</div>
+          <div class="character-name">Dr. Weber</div>
+        </div>
+        <div class="typing-text-container" id="typingWelcome"></div>
+      `;
       const typing = document.getElementById('typingWelcome');
-      const intro = `Herzlich willkommen, ${currentUser.name}! Heute tauchen wir ein in die Welt der medizinischen Fachbegriffe. Dr. Weber und sein Team warten schon auf dich. Bist du bereit?`;
+      const intro = `Willkommen bei der WFA Akademie, ${currentUser.name}! Ich bin Dr. Weber. Heute lernen wir die wichtigsten medizinischen Ausdrücke für Klinik und Praxis.`;
       startTypeWriter(typing, intro, () => {
-        actionBtn.textContent = 'Ja';
-        actionBtn.classList.add('ja-button');
+        actionBtn.textContent = 'Weiter';
+        actionBtn.classList.remove('ja-button');
         actionBtn.disabled = false;
       });
-    } else if (scene === 'askAge') {
+    }
+    
+    // Szene 3: Frage nach dem Alter
+    else if (scene === 'askAge') {
       stageContent.innerHTML = `
         <div class="stage-character">
           <div class="character-emoji heartbeat-emoji">👨‍⚕️</div>
@@ -258,13 +489,16 @@
         <div class="typing-text-container" id="typingAge"></div>
       `;
       const typing = document.getElementById('typingAge');
-      const msg = `Hallo ${currentUser.name}! Ich bin Dr. Weber. Schön, dass du hier bist. Bevor wir beginnen, verrate mir bitte dein Alter.`;
+      const msg = `Wie alt sind Sie, ${currentUser.name}?`;
       startTypeWriter(typing, msg, () => {
-        actionBtn.textContent = 'Weiter';
+        actionBtn.textContent = 'Alter eingeben';
         actionBtn.classList.remove('ja-button');
         actionBtn.disabled = false;
       });
-    } else if (scene === 'ageInput') {
+    }
+    
+    // Szene 4: Alterseingabe
+    else if (scene === 'ageInput') {
       stageContent.innerHTML = `
         <div class="input-form">
           <h3>Bitte gib dein Alter ein:</h3>
@@ -274,7 +508,7 @@
       `;
       const submitAge = document.getElementById('submitAgeBtn');
       const ageInput = document.getElementById('ageInput');
-      // Alte Listener durch Klonen entfernen
+      
       const newSubmit = submitAge.cloneNode(true);
       submitAge.parentNode.replaceChild(newSubmit, submitAge);
       newSubmit.addEventListener('click', function() {
@@ -282,29 +516,53 @@
         if (age && !isNaN(age) && age > 0) {
           currentUser.age = age;
           saveUser();
-          scene = 'introduceSecond';
+          scene = 'introduceWeber';
           renderScene();
         }
       });
       actionBtn.disabled = true;
-    } else if (scene === 'introduceSecond') {
+    }
+    
+    // Szene 5: Dr. Weber stellt sich vor
+    else if (scene === 'introduceWeber') {
       stageContent.innerHTML = `
         <div class="stage-character">
           <div class="character-emoji heartbeat-emoji">👨‍⚕️</div>
           <div class="character-name">Dr. Weber</div>
         </div>
-        <div class="typing-text-container" id="typingIntro2"></div>
+        <div class="typing-text-container" id="typingWeber"></div>
       `;
-      const typing = document.getElementById('typingIntro2');
-      const msg = `Danke, ${currentUser.name} (${currentUser.age || '?'} Jahre)! Jetzt beginnen wir mit der medizinischen Untersuchung. Aber ich bin nicht allein – das ist meine Kollegin, Dr. Schmidt.`;
+      const typing = document.getElementById('typingWeber');
+      const msg = `Perfekt. Ich bin Dr. Weber, Spezialist für Allgemeinmedizin. Lassen Sie mich Ihnen meine Kollegin vorstellen, Dr. Schmidt von der Kardiologie.`;
       startTypeWriter(typing, msg, () => {
         actionBtn.textContent = 'Weiter';
         actionBtn.classList.remove('ja-button');
         actionBtn.disabled = false;
       });
-    } else if (scene === 'showBoth') {
+    }
+    
+    // Szene 6: Einführung von Dr. Schmidt
+    else if (scene === 'introduceSchmidt') {
       stageContent.innerHTML = `
-        <div style="display: flex; gap: 30px; justify-content: center;">
+        <div class="stage-character">
+          <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
+          <div class="character-name">Dr. Schmidt</div>
+        </div>
+        <div class="typing-text-container" id="typingSchmidt"></div>
+      `;
+      const typing = document.getElementById('typingSchmidt');
+      const msg = `Guten Tag! Ich bin Dr. Schmidt, Spezialistin für Innere Medizin und Kardiologie. Heute lernen Sie die wichtigsten medizinischen Fachbegriffe, die Sie in Klinik und Praxis brauchen.`;
+      startTypeWriter(typing, msg, () => {
+        actionBtn.textContent = 'Weiter';
+        actionBtn.classList.remove('ja-button');
+        actionBtn.disabled = false;
+      });
+    }
+    
+    // Szene 7: Beide Ärzte zusammen
+    else if (scene === 'showBoth') {
+      stageContent.innerHTML = `
+        <div style="display: flex; gap: 40px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
           <div class="stage-character">
             <div class="character-emoji heartbeat-emoji">👨‍⚕️</div>
             <div class="character-name">Dr. Weber</div>
@@ -315,16 +573,117 @@
           </div>
         </div>
         <div class="stage-dialogue">
-          Dr. Weber: Und das ist Dr. Schmidt, unsere Spezialistin für Innere Medizin. Sie wird dich durch die Untersuchung führen.
+          Dr. Weber: Das ist Dr. Schmidt, unsere Spezialistin für Innere Medizin. Sie kennt alle wichtigen medizinischen Ausdrücke.
+        </div>
+        <div class="stage-dialogue" style="margin-top: 15px;">
+          Dr. Schmidt: Gemeinsam begleiten wir Sie durch Ihre medizinische Ausbildung.
         </div>
       `;
-      actionBtn.textContent = 'Los geht\'s';
+      actionBtn.textContent = 'Weiter';
       actionBtn.classList.remove('ja-button');
       actionBtn.disabled = false;
-    } else if (scene === 'assistantIntro') {
+    }
+    
+    // Szene 8: Dr. Schmidt erklärt wichtige medizinische Begriffe
+    else if (scene === 'medicalTerms') {
       stageContent.innerHTML = `
         <div class="spotlight"></div>
-        <div class="stage-character" id="assistantChar">
+        <div class="stage-character">
+          <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
+          <div class="character-name">Dr. Schmidt</div>
+        </div>
+        <div class="typing-text-container" id="termsIntro"></div>
+        <div id="termsGrid" style="display: none;" class="body-parts-grid"></div>
+      `;
+
+      const introContainer = document.getElementById('termsIntro');
+      const gridContainer = document.getElementById('termsGrid');
+
+      const introText = `Hier sind die wichtigsten medizinischen Fachbegriffe, die Sie in der Klinik und Praxis täglich hören werden. Klicken Sie auf jeden Begriff für detaillierte Informationen.`;
+
+      startTypeWriter(introContainer, introText, () => {
+        introContainer.style.display = 'none';
+        gridContainer.style.display = 'grid';
+        
+        const importantTerms = vocabulary.filter(v => v.level <= 2 && (v.type === 'noun' || v.type === 'verb') && v.word.length > 2).slice(0, 16);
+        
+        let gridHTML = '';
+        importantTerms.forEach(term => {
+          const wordClass = getWordClass(term.word);
+          gridHTML += `
+            <div class="body-part-info" onclick="window.showWordInfo('${term.word}')">
+              <div class="body-part-name ${wordClass}">${term.article ? term.article + ' ' : ''}${term.word}</div>
+              <div class="body-part-desc">${term.meaning}</div>
+              ${term.diagnose ? `<div class="body-part-diagnosis">🔍 ${term.diagnose}</div>` : ''}
+            </div>
+          `;
+        });
+        
+        gridContainer.innerHTML = gridHTML;
+        
+        actionBtn.textContent = 'Weiter zur Untersuchung';
+        actionBtn.classList.remove('ja-button');
+        actionBtn.disabled = false;
+      });
+    }
+    
+    // Szene 9: Medizinische Untersuchung mit Patientenfragen
+    else if (scene === 'medicalExamination') {
+      stageContent.innerHTML = `
+        <div class="stage-character">
+          <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
+          <div class="character-name">Dr. Schmidt</div>
+        </div>
+        <div class="typing-text-container" id="examinationText"></div>
+        <div id="examinationQuestion" style="display: none;" class="medical-question"></div>
+      `;
+
+      const examContainer = document.getElementById('examinationText');
+      const questionContainer = document.getElementById('examinationQuestion');
+
+      const examText = `Ein Patient kommt in die Praxis. Was fragen Sie zuerst?`;
+
+      startTypeWriter(examContainer, examText, () => {
+        examContainer.style.display = 'none';
+        questionContainer.style.display = 'block';
+        questionContainer.innerHTML = `
+          <p><strong>Welche Frage ist die richtige?</strong></p>
+          <div class="medical-options">
+            <div class="medical-option" data-correct="true">1. Was fehlt Ihnen?</div>
+            <div class="medical-option" data-correct="false">2. Wie ist das Wetter?</div>
+            <div class="medical-option" data-correct="false">3. Haben Sie Geld?</div>
+          </div>
+        `;
+
+        document.querySelectorAll('.medical-option').forEach(opt => {
+          opt.addEventListener('click', (e) => {
+            if (e.target.dataset.correct === 'true') {
+              addXP(20);
+              addGold(10);
+              stageContent.innerHTML = '<div class="emergency-success">✅ Richtig! +20 XP</div>';
+              setTimeout(() => {
+                scene = 'assistantIntro';
+                renderScene();
+              }, 2000);
+            } else {
+              addXP(-5);
+              stageContent.innerHTML = '<div class="emergency-fail">❌ Falsch! Versuchen Sie es noch einmal.</div>';
+              setTimeout(() => {
+                scene = 'medicalExamination';
+                renderScene();
+              }, 2000);
+            }
+          });
+        });
+        actionBtn.disabled = true;
+      });
+    }
+    
+    // Szene 10: Assistenz-Einführung
+    else if (scene === 'assistantIntro') {
+      stageContent.innerHTML = `
+        <div class="spotlight"></div>
+        <div class="stage-character">
           <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
           <div class="character-name">Dr. Schmidt</div>
         </div>
@@ -336,9 +695,9 @@
       const questionContainer = document.getElementById('assistantQuestion');
 
       const lines = [
-        "Vielen Dank, Herr Dr. Weber. Es ist mir eine große Freude, heute hier zu sein.",
-        "Ich bin spezialisiert auf Innere Medizin und unterstütze Sie bei der medizinischen Untersuchung.",
-        "Gemeinsam werden wir wichtige medizinische Begriffe Schritt für Schritt lernen."
+        "Vielen Dank für Ihre Aufmerksamkeit.",
+        "Sie haben heute viele wichtige medizinische Begriffe gelernt.",
+        "Diese Ausdrücke werden Ihnen im Krankenhaus und in der Praxis täglich begegnen."
       ];
 
       let lineIndex = 0;
@@ -352,13 +711,13 @@
           dialogueContainer.style.display = 'none';
           questionContainer.style.display = 'flex';
           questionContainer.innerHTML = `
-            <p style="color:gold; margin-bottom:10px; width:100%;">Sind Sie bereit, mit der Untersuchung zu beginnen?</p>
-            <div style="display:flex; gap:20px; justify-content:center;">
+            <p style="color:gold; margin-bottom:15px; width:100%; font-size:20px;">Sind Sie bereit, mit dem A1-Kurs zu beginnen?</p>
+            <div style="display:flex; gap:25px; justify-content:center;">
               <button class="assistant-btn" id="assistantYes">Ja, ich bin bereit.</button>
               <button class="assistant-btn secondary" id="assistantNo">Noch nicht.</button>
             </div>
           `;
-          // Entferne alte Listener durch Klonen
+          
           const yesBtn = document.getElementById('assistantYes');
           const noBtn = document.getElementById('assistantNo');
           if (yesBtn) {
@@ -366,7 +725,7 @@
             yesBtn.parentNode.replaceChild(newYes, yesBtn);
             newYes.addEventListener('click', () => {
               addXP(10);
-              scene = 'medicalExamination'; // Weiter zum neuen medizinischen Untersuchungsszene
+              scene = 'home';
               renderScene();
             });
           }
@@ -380,151 +739,10 @@
         }
       };
       typeNextLine();
-    } else if (scene === 'medicalExamination') {
-      // Neue medizinische Untersuchungsszene
-      stageContent.innerHTML = `
-        <div class="spotlight"></div>
-        <div class="stage-character">
-          <div class="character-emoji heartbeat-emoji">👩‍⚕️</div>
-          <div class="character-name">Dr. Schmidt</div>
-        </div>
-        <div id="medicalContainer" class="typing-text-container" style="min-height: 150px;"></div>
-        <div id="medicalTools" class="medical-tools" style="display: none;"></div>
-        <div id="bloodPressureDisplay" style="display: none;" class="blood-pressure">
-          <div>Blutdruckmessung</div>
-          <div class="blood-pressure-value" id="bpValue">120/80</div>
-          <div class="heartbeat-effect">💓</div>
-        </div>
-        <div id="bodyPartsDisplay" style="display: none;" class="body-parts-container"></div>
-        <div id="medicalQuestion" style="display: none;" class="medical-question"></div>
-      `;
-
-      const medicalContainer = document.getElementById('medicalContainer');
-      const toolsDiv = document.getElementById('medicalTools');
-      const bpDiv = document.getElementById('bloodPressureDisplay');
-      const bodyPartsDiv = document.getElementById('bodyPartsDisplay');
-      const questionDiv = document.getElementById('medicalQuestion');
-
-      // Szene Schritt für Schritt aufbauen
-      let step = 0;
-      const tools = [
-        { article: 'das', name: 'Blutdruckmessgerät', emoji: '🩺', desc: 'Es misst den Blutdruck.' },
-        { article: 'die', name: 'Manschette', emoji: '🔄', desc: 'Sie wird um den Arm gelegt.' },
-        { article: 'der', name: 'Stethoskop', emoji: '🩺', desc: 'Man hört damit den Herzschlag.' },
-        { article: 'das', name: 'Thermometer', emoji: '🌡️', desc: 'Es misst die Temperatur.' }
-      ];
-
-      const bodyParts = [
-        { article: 'der', name: 'Kopf', emoji: '👤' },
-        { article: 'der', name: 'Arm', emoji: '💪' },
-        { article: 'der', name: 'Bauch', emoji: '🤰' },
-        { article: 'die', name: 'Hand', emoji: '✋' },
-        { article: 'die', name: 'Nase', emoji: '👃' },
-        { article: 'das', name: 'Herz', emoji: '❤️' },
-        { article: 'das', name: 'Bein', emoji: '🦵' }
-      ];
-
-      const runScene = () => {
-        if (step === 0) {
-          startTypeWriter(medicalContainer, 'Wir beginnen jetzt mit der Untersuchung.', () => {
-            step++;
-            setTimeout(runScene, 1000);
-          });
-        } else if (step === 1) {
-          medicalContainer.style.display = 'none';
-          toolsDiv.style.display = 'flex';
-          let toolIndex = 0;
-          const showNextTool = () => {
-            if (toolIndex < tools.length) {
-              const tool = tools[toolIndex];
-              const toolHtml = `
-                <div class="tool-item" style="animation: fadeScale 0.5s ease;">
-                  <div class="tool-emoji">${tool.emoji}</div>
-                  <div class="tool-name ${tool.article === 'der' ? 'noun-m' : tool.article === 'die' ? 'noun-f' : 'noun-n'}">${tool.article} ${tool.name}</div>
-                  <div class="tool-desc">${tool.desc}</div>
-                </div>
-              `;
-              toolsDiv.innerHTML += toolHtml;
-              toolIndex++;
-              setTimeout(showNextTool, 1500);
-            } else {
-              // Alle Tools gezeigt, weiter zu Blutdruckmessung
-              setTimeout(() => {
-                toolsDiv.style.display = 'none';
-                bpDiv.style.display = 'block';
-                playCuffSound();
-                let bpValue = 120;
-                const interval = setInterval(() => {
-                  bpValue += Math.floor(Math.random() * 5) - 2;
-                  if (bpValue > 130) bpValue = 130;
-                  if (bpValue < 110) bpValue = 110;
-                  document.getElementById('bpValue').innerText = bpValue + '/80';
-                }, 200);
-                setTimeout(() => {
-                  clearInterval(interval);
-                  document.getElementById('bpValue').innerText = '120/80';
-                  step++;
-                  setTimeout(runScene, 2000);
-                }, 4000);
-              }, 1000);
-            }
-          };
-          showNextTool();
-        } else if (step === 2) {
-          bpDiv.style.display = 'none';
-          startTypeWriter(medicalContainer, 'Ihr Blutdruck ist stabil.', () => {
-            step++;
-            setTimeout(runScene, 1000);
-          });
-        } else if (step === 3) {
-          medicalContainer.style.display = 'none';
-          bodyPartsDiv.style.display = 'block';
-          let partIndex = 0;
-          const showNextPart = () => {
-            if (partIndex < bodyParts.length) {
-              const part = bodyParts[partIndex];
-              const partHtml = `
-                <div class="body-part ${part.article === 'der' ? 'der' : part.article === 'die' ? 'die' : 'das'}" style="animation: fadeScale 0.5s ease;">
-                  <div class="body-part-large">${part.emoji}</div>
-                  <div class="body-part-name">${part.article} ${part.name}</div>
-                </div>
-              `;
-              bodyPartsDiv.innerHTML = partHtml;
-              partIndex++;
-              setTimeout(showNextPart, 2000);
-            } else {
-              // Alle Körperteile gezeigt, dann Frage
-              setTimeout(() => {
-                bodyPartsDiv.style.display = 'none';
-                questionDiv.style.display = 'block';
-                questionDiv.innerHTML = `
-                  <p><strong>Welches Organ pumpt das Blut?</strong></p>
-                  <div class="medical-options">
-                    <div class="medical-option der" data-answer="der Kopf">der Kopf</div>
-                    <div class="medical-option das" data-answer="das Herz">das Herz</div>
-                    <div class="medical-option die" data-answer="die Hand">die Hand</div>
-                  </div>
-                `;
-                document.querySelectorAll('.medical-option').forEach(opt => {
-                  opt.addEventListener('click', (e) => {
-                    if (e.target.dataset.answer === 'das Herz') {
-                      addXP(10);
-                      addGold(5);
-                      scene = 'home';
-                      renderScene();
-                    } else {
-                      alert('Falsch! Versuche es nochmal.');
-                    }
-                  });
-                });
-              }, 1000);
-            }
-          };
-          showNextPart();
-        }
-      };
-      runScene();
-    } else if (scene === 'home') {
+    }
+    
+    // Szene 11: Startseite mit Level-Auswahl
+    else if (scene === 'home') {
       const levelNames = ['A1', 'A2', 'B1', 'B2'];
       let cards = '';
       for (let lvl = 1; lvl <= 4; lvl++) {
@@ -537,7 +755,8 @@
         `;
       }
       stageContent.innerHTML = `
-        <h3 style="color:gold; margin-bottom:10px;">Willkommen, ${currentUser.name}!</h3>
+        <h3 style="color:gold; margin-bottom:15px; font-size:24px;">Willkommen, ${currentUser.name}!</h3>
+        <p style="color:white; margin-bottom:20px; font-size:18px;">Wähle ein Level:</p>
         <div class="level-grid">${cards}</div>
       `;
       document.querySelectorAll('.level-card').forEach(card => {
@@ -548,6 +767,12 @@
           renderTab('words');
         });
       });
+      actionBtn.disabled = true;
+    }
+    
+    // Szene 12: Zertifikat
+    else if (scene === 'certificateScene') {
+      showCertificate(currentUser.level);
     }
   }
 
@@ -555,7 +780,10 @@
   function renderTab(tab) {
     currentTab = tab;
     navItems.forEach(item => item.classList.remove('active'));
-    document.getElementById(`nav${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+    const activeNav = document.getElementById(`nav${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+    if (activeNav) {
+      activeNav.classList.add('active');
+    }
 
     if (tab === 'home') {
       scene = 'home';
@@ -566,35 +794,31 @@
       showDialogs();
     } else if (tab === 'tests') {
       showTests();
+    } else if (tab === 'expressions') {
+      showExpressions();
     }
   }
 
   function showWords() {
-    const words = vocabulary.filter(v => v.level === currentUser.level);
+    const words = vocabulary.filter(v => v.level === currentUser.level && v.type !== 'expression');
     if (!words.length) {
       stageContent.innerHTML = '<p style="color:white;">Keine Wörter für dieses Level.</p>';
       return;
     }
     const word = words[currentWordIndex] || words[0];
-    let farbe = '';
-    if (word.type === 'noun') {
-      if (word.article === 'der') farbe = '#1565C0';
-      else if (word.article === 'die') farbe = '#C62828';
-      else if (word.article === 'das') farbe = '#7CB342';
-    } else farbe = '#00bcd4';
-
+    
     stageContent.innerHTML = `
       <div class="stage-flashcard" id="flashcard">
         <div class="front">
           <div class="word-emoji heartbeat-emoji">${word.emoji}</div>
-          <div class="word-title" style="color:${farbe}">${word.article ? word.article + ' ' : ''}${word.word}</div>
+          <div class="word-title ${getWordClass(word.word)}">${word.article ? word.article + ' ' : ''}${word.word}</div>
           ${word.plural ? `<div class="plural">Plural: ${word.plural}</div>` : ''}
         </div>
         <div class="back">
           <div class="back-section"><span class="section-label">Bedeutung</span><div class="section-content">${word.meaning}</div></div>
           <div class="back-section"><span class="section-label">Synonyme</span><div class="section-content">${word.synonyms || '-'}</div></div>
-          <div class="back-section"><span class="section-label">Beispiel</span><div class="section-content">"${word.example}"</div></div>
-          ${word.type === 'verb' ? `
+          <div class="back-section"><span class="section-label">Beispiel</span><div class="section-content">"${colorizeText(word.example)}"</div></div>
+          ${word.type === 'verb' && word.conjugation ? `
             <div class="back-section">
               <span class="section-label">Konjugation</span>
               <div class="section-content">
@@ -604,11 +828,17 @@
               </div>
             </div>
           ` : ''}
+          ${word.diagnose ? `
+            <div class="back-section">
+              <span class="section-label">Diagnose</span>
+              <div class="section-content">${word.diagnose}</div>
+            </div>
+          ` : ''}
         </div>
       </div>
-      <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-        <button class="primary-btn" id="prevWordBtn" style="padding:8px 16px;">◀</button>
-        <button class="primary-btn" id="nextWordBtn" style="padding:8px 16px;">▶</button>
+      <div style="display:flex; justify-content:center; gap:25px; margin-top:15px;">
+        <button class="primary-btn" id="prevWordBtn" style="padding:10px 20px;">◀</button>
+        <button class="primary-btn" id="nextWordBtn" style="padding:10px 20px;">▶</button>
       </div>
     `;
     const card = document.getElementById('flashcard');
@@ -621,14 +851,14 @@
   }
 
   function prevWord() {
-    const words = vocabulary.filter(v => v.level === currentUser.level);
+    const words = vocabulary.filter(v => v.level === currentUser.level && v.type !== 'expression');
     if (words.length) {
       currentWordIndex = (currentWordIndex - 1 + words.length) % words.length;
       showWords();
     }
   }
   function nextWord() {
-    const words = vocabulary.filter(v => v.level === currentUser.level);
+    const words = vocabulary.filter(v => v.level === currentUser.level && v.type !== 'expression');
     if (words.length) {
       currentWordIndex = (currentWordIndex + 1) % words.length;
       showWords();
@@ -647,10 +877,10 @@
         <div class="character-emoji heartbeat-emoji">${d.emoji}</div>
         <div class="character-name">${d.character}</div>
       </div>
-      <div class="stage-dialogue">${makeClickable(d.text)}</div>
-      <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-        <button class="primary-btn" id="prevDialogBtn" style="padding:8px 16px;">◀</button>
-        <button class="primary-btn" id="nextDialogBtn" style="padding:8px 16px;">▶</button>
+      <div class="stage-dialogue">${colorizeText(d.text)}</div>
+      <div style="display:flex; justify-content:center; gap:25px; margin-top:15px;">
+        <button class="primary-btn" id="prevDialogBtn" style="padding:10px 20px;">◀</button>
+        <button class="primary-btn" id="nextDialogBtn" style="padding:10px 20px;">▶</button>
       </div>
     `;
     document.getElementById('prevDialogBtn').addEventListener('click', prevDialog);
@@ -681,14 +911,14 @@
     const t = tests[currentTestIndex] || tests[0];
     stageContent.innerHTML = `
       <div class="stage-test">
-        <div class="question">${t.question}</div>
+        <div class="question">${colorizeText(t.question)}</div>
         <div class="options">
-          ${t.options.map(opt => `<div class="option" data-opt="${opt}" data-correct="${t.correct}">${opt}</div>`).join('')}
+          ${t.options.map(opt => `<div class="option" data-opt="${opt}" data-correct="${t.correct}">${colorizeText(opt)}</div>`).join('')}
         </div>
       </div>
-      <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-        <button class="primary-btn" id="prevTestBtn" style="padding:8px 16px;">◀</button>
-        <button class="primary-btn" id="nextTestBtn" style="padding:8px 16px;">▶</button>
+      <div style="display:flex; justify-content:center; gap:25px; margin-top:15px;">
+        <button class="primary-btn" id="prevTestBtn" style="padding:10px 20px;">◀</button>
+        <button class="primary-btn" id="nextTestBtn" style="padding:10px 20px;">▶</button>
       </div>
     `;
     document.querySelectorAll('.option').forEach(opt => {
@@ -703,7 +933,8 @@
             if (!currentUser.completedLevels.includes(currentUser.level)) {
               currentUser.completedLevels.push(currentUser.level);
               saveUser();
-              showCertificate(currentUser.level);
+              scene = 'certificateScene';
+              renderScene();
             }
           } else {
             currentTestIndex++;
@@ -735,66 +966,117 @@
     }
   }
 
-  function makeClickable(text) {
-    return text.split(' ').map(word => {
-      const clean = word.replace(/[.,!?]/g, '');
-      const found = vocabulary.find(v => v.word.toLowerCase() === clean.toLowerCase());
-      if (found) {
-        return `<span class="clickable-word" onclick="window.selectWord('${clean}')">${word}</span>`;
-      }
-      return word;
-    }).join(' ');
+  function showExpressions() {
+    const expressions = vocabulary.filter(v => v.type === 'expression');
+    if (!expressions.length) {
+      stageContent.innerHTML = '<p style="color:white;">Keine Ausdrücke vorhanden.</p>';
+      return;
+    }
+    const expr = expressions[currentExpressionIndex] || expressions[0];
+    
+    stageContent.innerHTML = `
+      <div class="stage-flashcard" id="flashcard">
+        <div class="front">
+          <div class="word-emoji heartbeat-emoji">${expr.emoji}</div>
+          <div class="word-title verb-word">${expr.word}</div>
+        </div>
+        <div class="back">
+          <div class="back-section"><span class="section-label">Bedeutung</span><div class="section-content">${expr.meaning}</div></div>
+          <div class="back-section"><span class="section-label">Synonyme</span><div class="section-content">${expr.synonyms || '-'}</div></div>
+          <div class="back-section"><span class="section-label">Beispiel</span><div class="section-content">"${colorizeText(expr.example)}"</div></div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:center; gap:25px; margin-top:15px;">
+        <button class="primary-btn" id="prevExprBtn" style="padding:10px 20px;">◀</button>
+        <button class="primary-btn" id="nextExprBtn" style="padding:10px 20px;">▶</button>
+      </div>
+    `;
+    const card = document.getElementById('flashcard');
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+      addGold(1);
+    });
+    document.getElementById('prevExprBtn').addEventListener('click', (e) => { e.stopPropagation(); prevExpression(); });
+    document.getElementById('nextExprBtn').addEventListener('click', (e) => { e.stopPropagation(); nextExpression(); });
   }
 
-  window.selectWord = function(word) {
-    const found = vocabulary.find(v => v.word.toLowerCase() === word.toLowerCase());
-    if (found) {
-      selectedWord = found;
-      addXP(2);
-      alert(`Wort: ${found.word} – Bedeutung: ${found.meaning}`);
+  function prevExpression() {
+    const expressions = vocabulary.filter(v => v.type === 'expression');
+    if (expressions.length) {
+      currentExpressionIndex = (currentExpressionIndex - 1 + expressions.length) % expressions.length;
+      showExpressions();
     }
-  };
+  }
+  function nextExpression() {
+    const expressions = vocabulary.filter(v => v.type === 'expression');
+    if (expressions.length) {
+      currentExpressionIndex = (currentExpressionIndex + 1) % expressions.length;
+      showExpressions();
+    }
+  }
 
   function showCertificate(level) {
     const levelNames = ['A1', 'A2', 'B1', 'B2'];
     const moduleName = `Medizinisches Deutsch – Level ${level} (${levelNames[level-1]})`;
     certificateInner.innerHTML = `
-      <h2>🏅 Zertifikat</h2>
-      <p class="cert-name">${currentUser.name}</p>
-      <p class="cert-level">Level ${level} – ${levelNames[level-1]}</p>
-      <p>hat erfolgreich das Modul</p>
-      <p class="cert-module">${moduleName}</p>
-      <p>abgeschlossen.</p>
-      <p class="cert-date">${new Date().toLocaleDateString('de-DE')}</p>
-      <div class="cert-signature">Prof. Dr. WFA · Akademieleitung</div>
+      <div class="certificate-animated-border">
+        <h2>🏅 WFA Akademie</h2>
+        <h3 style="color:#C62828; margin:15px 0;">Zertifikat</h3>
+        <p class="cert-name">${currentUser.name}</p>
+        <p class="cert-level">Level ${level} – ${levelNames[level-1]}</p>
+        <p>hat erfolgreich das Modul</p>
+        <p class="cert-module" style="font-weight:bold; color:#00bcd4;">${moduleName}</p>
+        <p>abgeschlossen.</p>
+        <p class="cert-date">${new Date().toLocaleDateString('de-DE')}</p>
+        <div class="cert-signature">Prof. Dr. WFA · Akademieleitung</div>
+        <div class="cert-seal">🏥</div>
+      </div>
     `;
     certificateModal.classList.add('active');
   }
 
-  closeCert.addEventListener('click', () => certificateModal.classList.remove('active'));
+  closeCert.addEventListener('click', () => {
+    certificateModal.classList.remove('active');
+    scene = 'home';
+    renderScene();
+  });
+  
   downloadCert.addEventListener('click', function() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const levelNames = ['A1', 'A2', 'B1', 'B2'];
     const levelName = levelNames[currentUser.level-1] || 'A1';
-    doc.setFontSize(24);
+    
+    doc.setFillColor(198, 40, 40);
+    doc.rect(0, 0, 210, 12, 'F');
+    doc.setFillColor(255, 215, 0);
+    doc.rect(0, 12, 210, 6, 'F');
+    
+    doc.setFontSize(32);
     doc.setTextColor(198, 40, 40);
-    doc.text('WFA Akademie', 20, 30);
+    doc.text('WFA Akademie', 20, 45);
     doc.setTextColor(255, 215, 0);
-    doc.setFontSize(20);
-    doc.text('Zertifikat', 20, 50);
+    doc.setFontSize(26);
+    doc.text('Zertifikat', 20, 70);
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(14);
-    doc.text(`Hiermit wird bestätigt, dass`, 20, 70);
-    doc.setFontSize(18);
+    doc.setFontSize(15);
+    doc.text(`Hiermit wird bestätigt, dass`, 20, 95);
+    doc.setFontSize(24);
     doc.setTextColor(0, 188, 212);
-    doc.text(currentUser.name, 20, 90);
+    doc.text(currentUser.name, 20, 120);
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(14);
-    doc.text(`das Modul "Medizinisches Deutsch – Level ${currentUser.level} (${levelName})"`, 20, 110);
-    doc.text(`erfolgreich abgeschlossen hat.`, 20, 120);
-    doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 140);
-    doc.text('Prof. Dr. WFA', 20, 170);
+    doc.setFontSize(15);
+    doc.text(`das Modul "Medizinisches Deutsch – Level ${currentUser.level} (${levelName})"`, 20, 145);
+    doc.text(`erfolgreich abgeschlossen hat.`, 20, 160);
+    doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 185);
+    doc.setFillColor(255, 215, 0);
+    doc.circle(170, 200, 18, 'F');
+    doc.setTextColor(198, 40, 40);
+    doc.setFontSize(22);
+    doc.text('🏥', 163, 210);
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(13);
+    doc.text('Prof. Dr. WFA', 20, 215);
     doc.save(`Zertifikat_${currentUser.name}_Level${currentUser.level}.pdf`);
   });
 
@@ -873,10 +1155,8 @@
 
   actionBtn.addEventListener('click', () => {
     if (currentTab !== 'home') return;
-    if (scene === 'curtain') {
-      scene = 'welcome';
-      renderScene();
-    } else if (scene === 'welcome' && typewriterFinished) {
+    
+    if (scene === 'welcome' && typewriterFinished) {
       scene = 'askAge';
       renderScene();
       typewriterFinished = false;
@@ -884,15 +1164,24 @@
       scene = 'ageInput';
       renderScene();
       typewriterFinished = false;
-    } else if (scene === 'introduceSecond' && typewriterFinished) {
+    } else if (scene === 'introduceWeber' && typewriterFinished) {
+      scene = 'introduceSchmidt';
+      renderScene();
+      typewriterFinished = false;
+    } else if (scene === 'introduceSchmidt' && typewriterFinished) {
       scene = 'showBoth';
       renderScene();
       typewriterFinished = false;
     } else if (scene === 'showBoth') {
+      scene = 'medicalTerms';
+      renderScene();
+    } else if (scene === 'medicalTerms') {
+      scene = 'medicalExamination';
+      renderScene();
+    } else if (scene === 'medicalExamination') {
       scene = 'assistantIntro';
       renderScene();
     }
-    // medicalExamination wird durch Button im assistantIntro gesteuert
   });
 
   startBtn.addEventListener('click', () => {
@@ -915,4 +1204,7 @@
     loginScreen.classList.add('active');
   }
   updateLeaderboard();
+
+  // Wort-Infobox global verfügbar machen
+  window.showWordInfo = showWordInfo;
 })();
