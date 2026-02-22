@@ -1,4 +1,4 @@
-/* style.css - Vollständige Styledatei mit professionellen Effekten und Textschutz */
+/* style.css - Vollständige Styledatei mit verbesserten Effekten und Textschutz */
 
 /* ========== GLOBAL ========== */
 * {
@@ -524,6 +524,7 @@ body {
   overflow-wrap: break-word;
   hyphens: auto;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
 .stage-content p, 
@@ -534,14 +535,67 @@ body {
   hyphens: auto;
 }
 
+/* Verbesserte Textcontainer für Arzt-Dialoge */
+.stage-dialogue {
+  background: white;
+  color: black;
+  border-radius: 50px;
+  padding: 18px 25px;
+  max-width: 95%;
+  margin: 15px 0;
+  border: 4px solid #FFD700;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  animation: slideUp 0.5s ease;
+  font-size: 18px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: auto;
+  min-width: 200px;
+}
+
+.stage-dialogue::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 35px;
+  border-width: 0 22px 22px 22px;
+  border-style: solid;
+  border-color: transparent transparent #FFD700 transparent;
+}
+
+/* Verbesserter Typing-Container */
+.typing-text-container {
+  background: rgba(0,0,0,0.8);
+  border-radius: 40px;
+  padding: 25px;
+  margin: 10px 0;
+  min-height: 150px;
+  font-size: 22px;
+  color: white;
+  box-shadow: 0 8px 35px rgba(0,0,0,0.8);
+  border: 4px solid #FFD700;
+  width: 100%;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.6;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @media (min-width: 768px) {
-  .stage-content {
-    min-height: 400px;
+  .typing-text-container {
+    min-height: 180px;
+    font-size: 24px;
     padding: 30px;
   }
 }
 
-/* ========== ACTION BUTTON - EINZIGER STEUERUNGSBUTTON ========== */
+/* ========== ACTION BUTTON ========== */
 .action-button-container {
   display: flex;
   justify-content: center;
@@ -619,7 +673,7 @@ body {
   display: none;
 }
 
-/* ========== WORT-INFOBOX ========== */
+/* ========== WORT-INFOBOX MIT SCHLIEßEN-FUNKTION ========== */
 .word-info-box {
   position: fixed;
   top: 50%;
@@ -683,6 +737,13 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   flex-shrink: 0;
+  animation: closeBtnPulse 2s infinite;
+}
+
+@keyframes closeBtnPulse {
+  0% { box-shadow: 0 0 5px #C62828; }
+  50% { box-shadow: 0 0 15px #C62828, 0 0 25px #FFD700; }
+  100% { box-shadow: 0 0 5px #C62828; }
 }
 
 .close-info-btn:hover {
@@ -727,7 +788,7 @@ body {
   border-radius: 10px;
 }
 
-/* ========== BOTTOM NAVIGATION MIT 5 BUTTONS ========== */
+/* ========== BOTTOM NAVIGATION MIT 5 BUTTONS UND VERBESSERTEN EFFEKTEN ========== */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -874,7 +935,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* ========== STAGE CONTENT ELEMENTS MIT TEXTSCHUTZ ========== */
+/* ========== STAGE CHARACTERS ========== */
 .stage-character {
   text-align: center;
   filter: drop-shadow(0 0 20px gold);
@@ -907,67 +968,6 @@ body {
 @keyframes float {
   from { transform: translateY(0); }
   to { transform: translateY(-15px); }
-}
-.stage-dialogue {
-  background: white;
-  color: black;
-  border-radius: 50px;
-  padding: 18px 25px;
-  max-width: 95%;
-  margin: 15px 0;
-  border: 4px solid #FFD700;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  animation: slideUp 0.5s ease;
-  font-size: 18px;
-  line-height: 1.6;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.stage-dialogue::before {
-  content: '';
-  position: absolute;
-  top: -20px;
-  left: 35px;
-  border-width: 0 22px 22px 22px;
-  border-style: solid;
-  border-color: transparent transparent #FFD700 transparent;
-}
-
-/* Typing-Container mit Textschutz */
-.typing-text-container {
-  background: rgba(0,0,0,0.8);
-  border-radius: 40px;
-  padding: 35px;
-  margin: 0;
-  min-height: 250px;
-  font-size: 24px;
-  color: white;
-  box-shadow: 0 8px 35px rgba(0,0,0,0.8);
-  border: 4px solid #FFD700;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  line-height: 1.8;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-@media (min-width: 768px) {
-  .typing-text-container {
-    min-height: 280px;
-    font-size: 26px;
-  }
 }
 
 /* Eingabeformular */
@@ -1203,92 +1203,6 @@ body {
   border-top: 2px solid #FFD700;
   padding-top: 8px;
   font-weight: 500;
-  word-wrap: break-word;
-}
-
-/* Notfall-Szene (B1) */
-.emergency-spotlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(255,0,0,0.4) 0%, transparent 70%);
-  animation: emergencyPulse 0.5s infinite;
-  pointer-events: none;
-}
-@keyframes emergencyPulse {
-  0% { opacity: 0.3; }
-  50% { opacity: 0.9; }
-  100% { opacity: 0.3; }
-}
-.emergency-timer {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: black;
-  color: #FFD700;
-  padding: 10px 20px;
-  border-radius: 40px;
-  font-size: 22px;
-  font-weight: bold;
-  border: 3px solid #C62828;
-  z-index: 10;
-}
-.emergency-character {
-  margin-top: 50px;
-}
-.emergency-description {
-  background: rgba(0,0,0,0.9);
-  color: white;
-  padding: 25px;
-  border-radius: 30px;
-  margin: 25px 0;
-  border: 4px solid #FFD700;
-  font-size: 20px;
-  text-align: center;
-  word-wrap: break-word;
-}
-.emergency-options {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-}
-.emergency-option {
-  background: #C62828;
-  color: white;
-  border: 3px solid #FFD700;
-  border-radius: 50px;
-  padding: 18px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  word-wrap: break-word;
-}
-.emergency-option:hover {
-  background: #8B0000;
-  transform: scale(1.02);
-}
-.emergency-success {
-  background: #4CAF50;
-  color: white;
-  padding: 30px;
-  border-radius: 30px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  word-wrap: break-word;
-}
-.emergency-fail {
-  background: #f44336;
-  color: white;
-  padding: 30px;
-  border-radius: 30px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
   word-wrap: break-word;
 }
 
